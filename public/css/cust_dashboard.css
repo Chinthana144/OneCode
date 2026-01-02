@@ -1,0 +1,63 @@
+body{
+    background: radial-gradient(circle, rgb(215, 215, 237), rgb(234, 238, 241));
+}
+
+#div_main{
+    justify-content: center;
+}
+
+#gif_correct{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+}
+
+h1{
+    text-align: center;
+}
+
+#div-countdown{
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+}
+
+#expire_date{
+    color: rgb(9, 9, 147);
+    font-size: 28px;
+}
+
+#countdown{
+    color: firebrick;
+    font-size: 28px;
+}
+
+#div_links{
+    width: 80%;
+    margin-left: 10%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.div_links{
+    border: 1px solid blue;
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+
+#img_youtube{
+    width: 100px;
+    height: auto;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+    #gif_correct{
+        display:block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+    }
+}

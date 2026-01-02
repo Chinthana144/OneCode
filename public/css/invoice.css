@@ -1,0 +1,57 @@
+#div_topbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px dimgray;
+    padding: 2px;
+}
+
+.img_navbar{
+    width: 50px;
+    height: 50px;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    padding: 5px;
+    transition: all 0.3s;
+}
+
+.img_navbar:hover{
+    background-color: darkblue;
+}
+
+.btn_navbar{
+    border: none;
+    background-color: inherit;
+}
+
+#invoice_title{
+    font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 24px;
+    margin-bottom: 2px;
+    margin-top: 10px;
+}
+
+#div_customer_details{
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px dimgray;
+    padding: 5px;
+}
+
+#p_customer_details{
+    padding: 10px;
+}
+
+#div_packages{
+    padding: 10px;
+}
+
+#div_package_details{
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px dimgray;
+    padding: 5px;
+}
+#p_package_details{
+    padding: 10px;
+}
+

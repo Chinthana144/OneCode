@@ -1,0 +1,98 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+#com_logo{
+    width: 80%;
+    height: auto;
+    margin-left: 10%;
+    border-radius: 10px;
+}
+
+#div_background{
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    opacity: 0.8;
+    position: absolute;
+    z-index: -1;
+    background: linear-gradient(60deg,rgba(255, 250, 250, 1) 0%, rgba(80, 107, 242, 1) 68%, rgba(17, 44, 245, 1) 100%);
+}
+
+#div_login{
+    margin: auto;
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    border: 3px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+}
+
+.link_title{
+    text-decoration: none;
+}
+
+#h1_title{
+    text-align: center;
+    color: #333;
+    font-size: 2.5em;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    padding: 10px;
+    color: dodgerblue;
+}
+
+/* input */
+.txt_input{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.div_input{
+    margin: 10px 0;
+}
+
+#btn_login{
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+    #div_login {
+        width: 90%;
+        left: 5%;
+        top: 20%;
+    }
+
+    #h1_title {
+        font-size: 2em;
+    }
+
+    .txt_input, #btn_login {
+        font-size: 1em;
+    }
+}

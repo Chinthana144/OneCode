@@ -1,0 +1,78 @@
+#div_customer_login{
+    width: 30%;
+    margin-left: 35%;
+    height: 90vh;
+    box-shadow: 0 0 10px grey;
+    border-radius: 10px;
+}
+
+#div_customer_login h3{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #232323;
+    text-align: center;
+}
+
+#img_logo{
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 20%;
+    border-radius: 10px;
+}
+
+.input_field{
+    width: 80%;
+    margin-left: 10%;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+.labels{
+    text-align: left;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+
+.btn_submit{
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #374598;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#p_link{
+    margin-left: 10%;
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#pwd{
+    margin-bottom: 2px;
+}
+
+#show_pwd{
+    margin-left: 10%;
+    margin-top: 10px;
+}
+#lbl_show_pwd{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #232323;
+    margin-left: 5px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    #div_customer_login{
+        width: 90%;
+        margin-left: 5%;
+        height: 90vh;
+        box-shadow: 0 0 10px grey;
+        border-radius: 10px;
+    }
+}

@@ -1,0 +1,58 @@
+#div_top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.div_box{
+    width: 20%;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 3px 1px gray;
+}
+
+#div_sale_box{
+    background-color: #4e73df;
+    color: white;
+}
+
+#div_subs_box{
+    background-color: #1cc88a ;
+    color: white;
+}
+
+#div_month_sale_box{
+    background-color: #f6c23e;
+    color: white;
+}
+
+#div_users_box{
+    background-color: #e74a3b;
+    color: white;
+}
+
+#div_mobile_top{
+    display: none;
+}
+
+/* responsive design */
+@media(max-width: 768px){
+    #div_top{
+        display: none;
+    }
+
+    #div_mobile_top{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .div_box{
+        width: 100%;
+        padding: 5px 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0px 2px 3px 1px gray;
+    }
+}
