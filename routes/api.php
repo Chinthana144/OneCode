@@ -36,20 +36,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //subscriptions
     Route::post('/addSubscriptionFromAPI', [SubscriptionController::class, 'addSubscriptionFromAPI'])->name('api.addSubscriptionFromAPI');
-<<<<<<< HEAD
-    Route::post('/rechargeSubscriptionFromAPI', [SubscriptionController::class, 'rechargeSubscriptionFromAPI'])->name('api.rechargeSubscriptionFromAPI');
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
     Route::get('/getSubscriptionByUserDate', [SubscriptionController::class, 'getSubscriptionByUserDate'])->name('api.getSubscriptionByUserDate');
     Route::get('/searchSubscriptionsByUser', [SubscriptionController::class, 'searchSubscriptionsByUser'])->name('api.searchSubscriptionsByUser');
     Route::get('/getDonutChartData', [SubscriptionController::class, 'getDonutChartData'])->name('api.getDonutChartData');
     Route::get('/getBarChartData', [SubscriptionController::class, 'getBarChartData'])->name('api.getBarChartData');
     Route::get('/getOneSubscriptionAPI', [SubscriptionController::class, 'getOneSubscriptionAPI'])->name('api.getOneSubscriptionAPI');
-<<<<<<< HEAD
-    Route::post('/resetMacAddressAPI', [SubscriptionController::class, 'resetMacAddressAPI'])->name('api.resetMacAddressAPI');
-    Route::get('/getSubscriptionByCustomer', [SubscriptionController::class,'getSubscriptionByCustomer'])->name('api.getSubscriptionByCustomer');
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 
     // Add your authenticated routes here
     Route::post('/logout', [UserController::class, 'logout'])->name('api.logout');

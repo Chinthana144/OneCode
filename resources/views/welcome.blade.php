@@ -4,17 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<<<<<<< HEAD
 
     <title>Trizent</title>
 
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/company/trizent_icon.ico') }}">
-=======
-    <title>Trizent</title>
-
-    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 </head>
 <body>
     {{-- <div id="top_bar">

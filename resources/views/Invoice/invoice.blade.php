@@ -48,7 +48,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
@@ -63,21 +62,14 @@
         </div>
     @endif
 
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
     <div class="card mt-2">
         <div class="card-header">
             <h5>Invoice</h5>
         </div>
-<<<<<<< HEAD
     <div class="card-body">
         <form action="{{ route('subscription.store') }}" method="post">
             @csrf
             <div class="col-md-6 offset-md-3">
-=======
-        <div class="card-body">
-            <div class="col-md-6">
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                 <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
 
                 <label for="">Select Customer</label>
@@ -100,7 +92,6 @@
                 <div id="div_package_details">
                     <p id="p_package_details">Select Package</p>
 
-<<<<<<< HEAD
                     <div class="row">
                         <div class="col-md-6">
                             <button type="submit" name="action" value="recharge" id="btn_recharge_subscription" class="btn btn-success w-100">Recharge</button>
@@ -113,20 +104,6 @@
             </div>
         </form>
     </div>
-=======
-                    <form id="frm_subscription">
-                        @csrf
-
-                        <input type="hidden" name="hide_customer_id" id="hide_customer_id" value="0">
-                        <input type="hidden" name="hide_package_id" id="hide_package_id" value="0">
-
-                        <button type="submit" id="btn_add_subscription" class="btn btn-primary">Submit</button>
-
-                    </form>
-                </div>
-            </div>
-        </div>
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
     </div>
 
     @include('Invoice.customer_modal')
