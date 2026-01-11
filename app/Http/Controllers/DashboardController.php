@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\Subscriptions;
 use Illuminate\Http\Request;
@@ -23,23 +24,23 @@ class DashboardController extends Controller
         $this_month = date('m');
 
         //daily subs
-        $daily_subs_total = Subscriptions::where('camp_id', $camp_id)
+        $daily_subs_total = AccessPlanes::where('camp_id', $camp_id)
             ->whereDate('purchaseDate', $today)
             ->sum('price');
 
         //daily invoice count
-        $daily_subs_count = Subscriptions::where('camp_id', $camp_id)
+        $daily_subs_count = AccessPlanes::where('camp_id', $camp_id)
             ->whereDate('purchaseDate', $today)
             ->count('id');
 
         //monthly sale
-        $monthly_subs_sale = Subscriptions::where('camp_id', $camp_id)
+        $monthly_subs_sale = AccessPlanes::where('camp_id', $camp_id)
             ->whereYear('purchaseDate', $this_year)
             ->whereMonth('purchaseDate', $this_month)
             ->sum('price');
 
         //running users
-        $running_users = Subscriptions::where('camp_id', $camp_id)
+        $running_users = AccessPlanes::where('camp_id', $camp_id)
             ->where('status', 2)
             ->count('id');
 

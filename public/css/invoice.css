@@ -32,9 +32,10 @@
     margin-top: 10px;
 }
 
-#div_customer_details{
+.detail_card{
+    margin-top: 2px;
     border-radius: 5px;
-    box-shadow: 2px 2px 5px dimgray;
+    box-shadow: 1px 1px 2px dimgray;
     padding: 5px;
 }
 

@@ -11,11 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vouchers', function (Blueprint $table) {
+        Schema::create('access_planes', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->foreignId('camp_id');
+            $table->foreignId('user_id');
+            $table->foreignId('package_id');
+            $table->foreignId('paymethod_id');
+            $table->morphs('accessable');
             $table->date('purchaseDate');
             $table->datetime('purchaseDateTime');
+            $table->datetime('login_at');
+            $table->datetime('expire_at');
+            $table->string('mac_address');
+            $table->string('ip_address');
+            $table->decimal('price');
             $table->smallInteger('status');
             $table->timestamps();
         });
@@ -26,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vouchers');
+        Schema::dropIfExists('access_planes');
     }
 };

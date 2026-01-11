@@ -67,42 +67,70 @@
             <h5>Invoice</h5>
         </div>
     <div class="card-body">
-        <form action="{{ route('subscription.store') }}" method="post">
-            @csrf
-            <div class="col-md-6 offset-md-3">
-                <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
+        <div class="row">
+            <div class="col-md-6 p-1">
+                <div class="border border-primary rounded p-1">
+                    <form action="{{ route('subscription.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
+                        <h5 class="badge bg-primary">Subscriptions</h5><br>
+                        <label for="">Select Customer</label>
+                        <select name="cmb_customer" id="cmb_customer" class="form-control" style="width: 100%;">
+                        </select>
 
-                <label for="">Select Customer</label>
-                <select name="cmb_customer" id="cmb_customer" class="form-control" style="width: 100%;">
-                </select>
+                        <div id="div_customer_details" class="detail_card">
+                            <p id="p_customer_details">Select Customer</p>
 
-                <div id="div_customer_details">
-                    <p id="p_customer_details">Select Customer</p>
-
-                    <button type="button" class="btn btn-primary btn-sm" id="btn_customer_history">
-                        Customer History
-                    </button>
-                </div>
-
-                <div id="div_packages">
-                    <label for="">Customer Packages</label>
-                    <select name="cmb_packages" id="cmb_packages" class="form-select"></select>
-                </div>
-
-                <div id="div_package_details">
-                    <p id="p_package_details">Select Package</p>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button type="submit" name="action" value="recharge" id="btn_recharge_subscription" class="btn btn-success w-100">Recharge</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="btn_customer_history">
+                                Customer History
+                            </button>
                         </div>
-                        <div class="col-md-6">
-                            <button type="submit" name="action" value="add" id="btn_add_subscription" class="btn btn-primary w-100">Add</button>
+
+                        <div id="div_packages">
+                            <label for="">Customer Packages</label>
+                            <select name="cmb_subscription_packages" id="cmb_subscription_packages" class="form-select"></select>
                         </div>
-                    </div>
+
+                        <div id="div_package_details">
+                            <p id="p_package_details">Select Package</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="submit" name="action" value="recharge" id="btn_recharge_subscription" class="btn btn-success w-100">Recharge</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" name="action" value="add" id="btn_add_subscription" class="btn btn-primary w-100">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </form>
+
+            <div class="col-md-6 p-1">
+                <div class="border border-primary rounded p-1">
+                    <h5 class="badge bg-success">Vouchers</h5>
+                    <form action="" method="post">
+                        @csrf
+                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
+                        <label for="">Customer Number</label>
+                        <input type="text" name="customer_no" class="form-control">
+
+                        <div id="div_voucher_details" class="detail_card">
+                            <p>Voucher Details</p>
+                        </div>
+
+                        <div id="div_packages">
+                            <label for="">Customer Packages</label>
+                            <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
+                        </div>
+
+                        <button class="btn btn-">Issue Voucher</button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
     </div>
     </div>
 
