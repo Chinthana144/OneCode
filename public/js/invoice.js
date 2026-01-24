@@ -2,6 +2,7 @@ $(document).ready(function () {
     //initialize
     $("#btn_customer_history").css('display', 'none');
     $("#btn_add_subscription").attr('disabled', 'true');
+    $("#btn_recharge_subscription").attr('disabled', 'true');
 
     $("#cmb_customer").select2({
         placeholder: 'Search Customers',
@@ -41,7 +42,7 @@ $(document).ready(function () {
             // dataType: "dataType",
             success: function (response) {
                 // alert(response['name']);
-                // console.log(response);
+                console.log(response);
                 var customer_fullname = response['fullname'];
                 var customer_username = response['username'];
                 var customer_phone = response['phone'];
@@ -52,7 +53,6 @@ $(document).ready(function () {
 
                 $("#btn_customer_history").css('display', 'block');
             }
-
         });
 
         var package_data = "<option value='0'>Select Package</option>";
@@ -108,50 +108,52 @@ $(document).ready(function () {
         else
         {
             $("#btn_add_subscription").attr('disabled', true);
+            $("#btn_recharge_subscription").attr('disabled', true);
         }
     });
 
-    $("#frm_subscription").submit(function (e) {
-        e.preventDefault();
-        var customer_id = $("#hide_customer_id").val();
-        var package_id = $("#hide_package_id").val();
+    // $("#frm_subscription").submit(function (e) {
+    //     e.preventDefault();
+    //     var customer_id = $("#hide_customer_id").val();
+    //     var package_id = $("#hide_package_id").val();
 
-        $.ajax({
-            type: "post",
-            url: "/store-subscription",
-            data: $(this).serialize(),
-            // dataType: "dataType",
-            success: function (response) {
-                console.log(response);
-                var has_success = response['success'];
-                // var message = response['message'];
+    //     $.ajax({
+    //         type: "post",
+    //         url: "/store-subscription",
+    //         data: $(this).serialize(),
+    //         // dataType: "dataType",
+    //         success: function (response) {
+    //             console.log(response);
+    //             var has_success = response['success'];
+    //             // var message = response['message'];
 
-                // alert('data - ' + has_success);
+    //             // alert('data - ' + has_success);
 
-                if(has_success)
-                {
-                    var subscription_id = response['subscription_id'];
+    //             if(has_success)
+    //             {
+    //                 var subscription_id = response['subscription_id'];
 
-                    alert("Subscription added successfully. continue to QR code");
+    //                 alert("Subscription added successfully. continue to QR code");
 
-                    window.location.reload();
+    //                 window.location.reload();
 
-                    //print receipt
-                    // let printWindow = window.open('/receipt-print?subscription_id='+subscription_id, '_blank');
+    //                 //print receipt
+    //                 // let printWindow = window.open('/receipt-print?subscription_id='+subscription_id, '_blank');
 
-                    // setTimeout(function(){
-                    //     window.location.href = '/invoice';
-                    // }, 500);
-                }
-                else
-                {
-                    alert('task failed...');
-                }
-            }
-        });
-    });
+    //                 // setTimeout(function(){
+    //                 //     window.location.href = '/invoice';
+    //                 // }, 500);
+    //             }
+    //             else
+    //             {
+    //                 alert('task failed...');
+    //             }
+    //         }
+    //     });
+    // });
 
 //=============================== Customer ===========================//
+
 $("#btn_customers").click(function(){
     $("#customer_modal").modal('toggle');
 

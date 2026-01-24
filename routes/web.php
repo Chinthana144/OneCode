@@ -9,6 +9,7 @@ use App\Http\Controllers\CounterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MikrotikController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProfileController;
@@ -91,8 +92,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/package-search', [PackageController::class, 'packageSearch'])->name('package.search');
 
     //invoice
-    Route::get('/invoice', [SubscriptionController::class, 'index'])->name('invoice.index');
-    Route::post('/store-subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+    Route::post('/store-subscription', [InvoiceController::class, 'storeSubscription'])->name('invoice.store_subscription');
 
     //receipt print
     Route::get('/receipt-print', [SubscriptionController::class, 'receiptPrint'])->name('invoice.receiptPrint');

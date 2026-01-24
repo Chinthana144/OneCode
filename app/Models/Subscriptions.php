@@ -17,4 +17,9 @@ class Subscriptions extends Model
     {
         return $this->morphOne(AccessPlanes::class, 'accessable');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customers::class, 'customer_id');
+    }
 }//class

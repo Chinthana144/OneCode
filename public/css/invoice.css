@@ -56,3 +56,19 @@
     padding: 10px;
 }
 
+/*---------------------------------------------
+Form set
+----------------------------------------------*/
+.div_form_set{
+    padding: 10px 20px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    height: 100%;
+}
+.div_form_set .form_title{
+    font-size: 22px;
+}
+.div_form_set #cmb_customer{
+    padding: 8px 4px;
+    font-size: 18px;
+}
