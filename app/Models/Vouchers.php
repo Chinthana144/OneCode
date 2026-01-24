@@ -12,9 +12,4 @@ class Vouchers extends Model
     protected $fillable = [
         'code',
     ];
-
-    public function invoice()
-    {
-        return $this->morphOne(Invoices::class, 'invoiceable');
-    }
 }//class
