@@ -2,15 +2,6 @@ $(document).ready(function () {
     //initialize
     $("#btn_customer_history").css('display', 'none');
     $("#btn_add_subscription").attr('disabled', 'true');
-<<<<<<< HEAD
-    $("#btn_recharge_subscription").attr('disabled', 'true');
-
-    //close modal
-    $("#btn_close_history_modal").click(function(){
-        $("#history_modal").modal('hide');
-    });
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 
     $("#cmb_customer").select2({
         placeholder: 'Search Customers',
@@ -77,20 +68,20 @@ $(document).ready(function () {
                     package_data += "<option value='"+value['id']+"'>Name: "+value['name']+" | "+value['duration']+"(days) | Price: "+value['price']+" AED</option>";
                 });
 
-                $("#cmb_packages").empty();
-                $("#cmb_packages").append(package_data);
+                $("#cmb_subscription_packages").empty();
+                $("#cmb_subscription_packages").append(package_data);
             }
         });
     });
 
-    $("#cmb_packages").change(function () {
+    $("#cmb_subscription_packages").change(function () {
         //check values
-        var package_id = $("#cmb_packages").val();
+        var package_id = $("#cmb_subscription_packages").val();
 
         if(package_id > 0)
         {
             var customer_id = $("#cmb_customer").val();
-            var package_id = $("#cmb_packages").val();
+            var package_id = $("#cmb_subscription_packages").val();
 
             $("#hide_customer_id").val(customer_id);
             $("#hide_package_id").val(package_id);
@@ -111,41 +102,6 @@ $(document).ready(function () {
                     let package_data = "Package: <b>"+response['name']+"</b><br>Duration: <b>"+response['duration']+"</b><br>Price: <b>"+response['price']+" AED</b>"
 
                     $("#p_package_details").html(package_data);
-<<<<<<< HEAD
-                    $("#btn_recharge_subscription").text('Recharge ' + response['duration'] + ' days');
-                    $("#btn_add_subscription").text('Add ' + response['duration'] + ' days');
-                }
-            });
-
-            $.ajax({
-                type: "get",
-                url: "/getRunningSubscriptionByCustomer",
-                data: {
-                    customer_id:customer_id
-                },
-                // dataType: "dataType",
-                success: function (response) {
-                    // console.log("existing subscriptions");
-                    // console.log(response);
-                    if(response.id > 0)
-                    {
-                        $("#btn_recharge_subscription").attr('disabled', false);
-                    }
-                    else
-                    {
-                        $("#btn_recharge_subscription").attr('disabled', 'true');
-                    }
-                }
-            });
-        }//has package
-        else
-        {
-            $("#btn_add_subscription").attr('disabled', true);
-            $("#btn_recharge_subscription").attr('disabled', true);
-        }
-    });
-
-=======
                 }
             });
         }
@@ -195,7 +151,6 @@ $(document).ready(function () {
         });
     });
 
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 //=============================== Customer ===========================//
 $("#btn_customers").click(function(){
     $("#customer_modal").modal('toggle');
@@ -281,21 +236,6 @@ $("#btn_customer_history").click(function(){
                 sub_data += "<td>"+value['price']+"</td>";
                 switch (value['status']) {
                     case 1:
-<<<<<<< HEAD
-                        status = "<span class='badge bg-primary'>ACTIVE</span>";
-                    break;
-                    case 2:
-                        status = "<span class='badge bg-success'>RUNNING</span>";
-                    break;
-                    case 3:
-                        status = "<span class='badge bg-warning'>EXPIRED</span>";
-                    break;
-                    case 4:
-                        status = "<span class='badge bg-secondary'>TRANSFERRED</span>";
-                    break;
-                    default:
-                        status = "<span class='badge bg-danger'>CANCELED</span>";
-=======
                         status = "<p class='text-success border border-success rounded text-center' style='padding: 0px; margin:0px;'>Active</p>";
                     break;
                     case 2:
@@ -306,7 +246,6 @@ $("#btn_customer_history").click(function(){
                     break;
                     default:
                         status = "<p class='text-danger border border-danger rounded text-center' style='padding: 0px; margin:0px;'>Expired</p>";
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                     break;
                 }
                 sub_data += "<td>"+status+"</td>";

@@ -13,8 +13,8 @@ class Paymethods extends Model
         'paymethod_name',
     ];
 
-    public function subscriptions()
+    public function accessPlan()
     {
-        return $this->hasMany(Subscriptions::class, 'paymethod_id');
+        return $this->hasMany(AccessPlanes::class, 'paymethod_id');
     }
 }

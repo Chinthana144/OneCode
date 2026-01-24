@@ -6,7 +6,7 @@
                 <i class="bx bx-grid-alt"></i>
             </button>
             <div class="sidebar-logo">
-                <a href="/dashboard">TRIZENT</a>
+                <a href="/dashboard">OneCode ISPMS</a>
             </div>
         </div>
         <ul class="sidebar-nav">
@@ -223,7 +223,7 @@
         <div class="mobile-menu">
             <button class="btn_menu_toggle" type="button">
                 <i class="bx bx-menu"></i>
-                <span>CloudTik</span>
+                <span>OneCode ISPMS</span>
             </button>
 
             {{-- mobile menu --}}
@@ -416,7 +416,7 @@
         <div id="top_row">
             <div>
                 <h5>
-                    <b>TRIZENT</b> User Management System
+                    Unified Access Management System
                 </h5>
             </div>
             <div>

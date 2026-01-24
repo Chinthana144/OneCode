@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id');
+            $table->foreign('customer_id');
             $table->timestamps();
         });
     }

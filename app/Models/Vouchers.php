@@ -12,4 +12,10 @@ class Vouchers extends Model
     protected $fillable = [
         'code',
     ];
+
+    public function accessable()
+    {
+        return $this->morphOne(AccessPlanes::class, 'accessable');
+    }
+
 }//class

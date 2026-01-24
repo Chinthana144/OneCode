@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/company/trizent_icon.ico') }}">
-    <title>Trizent CloudTik</title>
+    <title>OneCode ISP</title>
 
 
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">

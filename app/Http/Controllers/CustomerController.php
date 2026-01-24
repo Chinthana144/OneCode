@@ -300,9 +300,16 @@ class CustomerController extends Controller
                 ->where('status', 1)
                 ->get();
 
+            $has_running_subscription = Subscriptions::where('customer_id', $customer->id)
+                ->where('status', 2)
+                ->exists();
+
+            $has_running_subscription = $has_running_subscription == 1 ? true : false;
+
             $customer_packages[] = [
                 'customer' => $customer,
                 'packages' => $packages,
+                'has_running_subscription' => $has_running_subscription,
             ];
         }
 
