@@ -50,5 +50,5 @@ class AccessPlanes extends Model
     {
         return $this->belongsTo(Camps::class, 'paymethod_id');
     }
-    
+
 }//class

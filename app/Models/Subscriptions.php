@@ -11,9 +11,6 @@ class Subscriptions extends Model
 
     protected $fillable = [
         'customer_id',
-        'purchaseDate',
-        'purchaseDateTime',
-        'status',
     ];
 
     public function accessable()

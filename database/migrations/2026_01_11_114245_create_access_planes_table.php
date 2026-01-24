@@ -20,10 +20,10 @@ return new class extends Migration
             $table->morphs('accessable');
             $table->date('purchaseDate');
             $table->datetime('purchaseDateTime');
-            $table->datetime('login_at');
-            $table->datetime('expire_at');
-            $table->string('mac_address');
-            $table->string('ip_address');
+            $table->datetime('login_at')->nullable();
+            $table->datetime('expire_at')->nullable();
+            $table->string('mac_address')->nullable();
+            $table->string('ip_address')->nullable();
             $table->decimal('price');
             $table->smallInteger('status');
             $table->timestamps();

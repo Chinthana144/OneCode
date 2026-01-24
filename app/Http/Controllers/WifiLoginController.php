@@ -31,11 +31,7 @@ class WifiLoginController extends Controller
     /*
     * validate customer login
     */
-<<<<<<< HEAD
-    public function basicLogin(Request $request)
-=======
     public function login(Request $request)
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
     {
         /*
         * find customer
@@ -189,13 +185,8 @@ class WifiLoginController extends Controller
     }//login
 
     //use this login in future
-<<<<<<< HEAD
-    public function login(Request $request){
-        date_default_timezone_set('Asia/Dubai');
-=======
     public function basicLogin(Request $request){
        date_default_timezone_set('Asia/Dubai');
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 
         $camp_id = $request->input('camp_id');
         $mac = $request->input('mac');
@@ -268,23 +259,6 @@ class WifiLoginController extends Controller
                     }//mac address un match
                 }//has running subscription
                 elseif($active_subscription){
-<<<<<<< HEAD
-                    /*
-                    * assign subscription start and expire datetime only if null
-                    * when user mac address changes, running state change to 'Active' state,
-                    * hence subscription start and end time should not be changed.
-                    */
-                    //make it running
-                    $active_subscription->status = 2; //running
-                    $active_subscription->subscriptionStartTime ??= now();
-                    $active_subscription->subscriptionEndTime ??= now()->addDays($active_subscription->package->duration);
-                    $active_subscription->macAddress = $mac;
-                    $active_subscription->save();
-
-                    //update customer mac address
-                    $customer->login_datetime ??= now();
-                    $customer->expiry_datetime ??= now()->addDays($active_subscription->package->duration);
-=======
                     //make it running
                     $active_subscription->status = 2; //running
                     $active_subscription->subscriptionStartTime = now();
@@ -294,7 +268,6 @@ class WifiLoginController extends Controller
                     //update customer mac address
                     $customer->login_datetime = now();
                     $customer->expiry_datetime = now()->addDays($active_subscription->package->duration);
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                     $customer->mac_address = $mac;
                     $customer->save();
 

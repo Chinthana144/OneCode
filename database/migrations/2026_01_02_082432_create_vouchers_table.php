@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->date('purchaseDate');
-            $table->datetime('purchaseDateTime');
-            $table->smallInteger('status');
             $table->timestamps();
         });
     }

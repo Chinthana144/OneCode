@@ -11,9 +11,6 @@ class Vouchers extends Model
 
     protected $fillable = [
         'code',
-        'purchaseDate',
-        'purchaseDateTime',
-        'status',
     ];
 
     public function accessable()

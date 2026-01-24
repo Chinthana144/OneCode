@@ -13,10 +13,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
-            $table->date('purchaseDate');
-            $table->datetime('purchaseDateTime');
-            $table->integer('status');
+            $table->foreign('customer_id');
             $table->timestamps();
         });
     }
