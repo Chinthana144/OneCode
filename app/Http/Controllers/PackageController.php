@@ -165,4 +165,12 @@ class PackageController extends Controller
 
         return response()->json($package);
     } //get one package
+
+    public function getLaborPackages()
+    {
+        //get labor packages
+        $labor_packages = Packages::where('customerType_id', 1)->get();
+
+        return response()->json($labor_packages);
+    }
 }

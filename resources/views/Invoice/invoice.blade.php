@@ -106,25 +106,23 @@
             <div class="col-md-6">
                 <div class="div_form_set">
                     <h5 class="badge bg-success form_title">Vouchers</h5>
-                    <form action="" method="post">
+                    <form action="{{ route('invoice.store_voucher') }}" method="post">
                         @csrf
                         <input type="hidden" name="hide_camp_id" id="hide_voucher_camp_id" value="{{ $camp->id }}">
                         <label for="">Customer Number</label>
-                        <div class="div_customer_input">
-                            <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
-                            <button type="button" class="btn btn-success">Generate</button>
-                        </div>
-
-                        <div id="div_voucher_details" class="detail_card">
-                            <p>Voucher Details</p>
-                        </div>
+                        <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
 
                         <div id="div_packages">
                             <label for="">Customer Packages</label>
                             <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
                         </div>
 
-                        <button type="submit" class="btn btn-success">Issue Voucher</button>
+                        <div class="detail_card">
+                            <p id="p_voucher_details">Voucher Details</p>
+                        </div>
+
+                        <input type="hidden" name="hide_voucher_no" id="hide_voucher_no">
+                        <button type="submit" class="btn btn-success mt-2" id="btn_voucher_submit">Issue Voucher</button>
                     </form>
                 </div>
             </div>

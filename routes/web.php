@@ -90,10 +90,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/getCustomerPackages', [PackageController::class, 'getCustomerPackages']);
     Route::get('/getOnePackage', [PackageController::class, 'getOnePackage']);
     Route::get('/package-search', [PackageController::class, 'packageSearch'])->name('package.search');
+    Route::get('/getLaborPackages', [PackageController::class, 'getLaborPackages']);
 
     //invoice
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
     Route::post('/store-subscription', [InvoiceController::class, 'storeSubscription'])->name('invoice.store_subscription');
+    Route::post('/store-voucher', [InvoiceController::class, 'storeVoucher'])->name('invoice.store_voucher');
     Route::get('/getVoucherNo', [InvoiceController::class, 'getVoucherNo']);
 
     //receipt print

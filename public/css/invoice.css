@@ -44,7 +44,7 @@
 }
 
 #div_packages{
-    padding: 10px;
+    padding: 10px 0px;
 }
 
 #div_package_details{
@@ -73,8 +73,12 @@ Form set
     font-size: 18px;
 }
 
-.div_customer_input{
-    display: flex;
-    flex-direction: row;
-    padding: 5px;
+/* voucher style */
+.voucher-style{
+    background-color: green;
+    padding:5px 20px;
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
 }

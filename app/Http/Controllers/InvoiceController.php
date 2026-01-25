@@ -6,6 +6,7 @@ use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\Packages;
 use App\Models\Subscriptions;
+use App\Models\Vouchers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -63,18 +64,79 @@ class InvoiceController extends Controller
         else{
             return redirect()->route('invoice.index')->with('error', 'Subscription add failed!');
         }
-    }//store
+    }//subscription store
 
-    public function getVoucherNo()
+    public function storeVoucher(Request $request)
     {
-        $generated_code = $this->generateNumericVoucherCode();
+        $user_id = auth()->user()->id;
+        $camp_id = Session::get('active_camp_id');
 
-        //get labor packages
-        $labor_packages = Packages::where('customerType_id', 1)->get();
+        $package_id = $request->input('cmb_voucher_packages');
+        $purchased_date = date('Y-m-d');
+        $purchased_time = date('Y-m-d H:i:s');
+
+        //get price
+        $package = Packages::find($package_id);
+        $price = $package->price;
+
+        $status = 1; //Active package
+
+        $generated_code = $request->input('hide_voucher_no');
+        $expire_at = now()->addDays(90);
+
+        //check voucher if exists
+        if(Vouchers::where('code', $generated_code)
+                ->whereBetween('expire_date', [now(), $expire_at])
+                ->exists())
+        {
+            return redirect()->route('invoice.index')->with('error', 'Subscription add failed!');
+        }//code exist abrot
+        else{
+            $voucher = Vouchers::create([
+                'code' => $generated_code,
+                'expire_date' => $expire_at,
+            ]);
+
+            //accessable
+            $accessable_type = Vouchers::class;
+            $accessable_id = $voucher->id;
+
+            $invoice = AccessPlanes::create([
+                'camp_id' => $camp_id,
+                'user_id' => $user_id,
+                'package_id' => $package_id,
+                'paymethod_id' => 1, //default cash
+                'accessable_type' => $accessable_type,
+                'accessable_id' => $accessable_id,
+                'purchaseDate' => $purchased_date,
+                'purchaseDateTime' => $purchased_time,
+                'price' => $price,
+                'status' => 1, //Active status
+            ]);
+
+            return redirect()->route('invoice.index')->with('success', 'Voucher added successfully!');
+        }//unique code
+    }//store voucher
+
+    public function getVoucherNo(Request $request)
+    {
+        $package_id = $request->input('package_id');
+        $package = Packages::find($package_id)->first();
+
+        $expire_at = now()->addDays(90);
+
+        //validate unique
+        do{
+            $generated_code = $this->generateNumericVoucherCode();
+        }
+        while(Vouchers::where('code', $generated_code)
+                ->whereBetween('expire_date', [now(), $expire_at])
+                ->exists()
+            );
 
         return response()->json([
             'code' => $generated_code,
-            'packages' => $labor_packages,
+            'package' => $package,
         ]);
     }
 

@@ -119,22 +119,43 @@ $("#customer_no").change(function (e) {
     var package_data = "<option value='0'>Select Package</option>";
     $.ajax({
         type: "get",
-        url: "/getVoucherNo",
-        data: {
-            camp_id: camp_id,
-        },
+        url: "/getLaborPackages",
+        // data: "",
         // dataType: "dataType",
         success: function (response) {
             console.log(response);
-            var voucher_code = response['code'];
-            var packages = response['packages'];
-
-            $.each(packages, function (key, val) {
-                package_data += "<option value='"+val['id']+"'>Name: "+val['name']+" | "+val['duration']+"(days) | Price: "+val['price']+" AED</option>";
+            $.each(response, function (key, value) {
+                package_data += "<option value='"+value['id']+"'>Name: "+value['name']+" | "+value['duration']+"(days) | Price: "+value['price']+" AED</option>";
             });
 
             $("#cmb_voucher_packages").empty();
             $("#cmb_voucher_packages").append(package_data);
+        }
+    });
+});
+
+$("#cmb_voucher_packages").change(function (e) {
+    e.preventDefault();
+    var package_id = $(this).val();
+    var customer_no = $("#customer_no").val();
+
+    $.ajax({
+        type: "get",
+        url: "/getVoucherNo",
+        data: {
+            package_id: package_id,
+        },
+        // dataType: "dataType",
+        success: function (response) {
+            console.log(response);
+            let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
+            htmlDetails += "Package: <b>"+response['package']['name']+"</b><br>";
+            htmlDetails += "Duration: <b>"+response['package']['duration']+"</b><br>";
+            htmlDetails += "Package: <b>"+response['package']['name']+"</b>";
+
+            $("#hide_voucher_no").val(response['code']);
+            $("#p_voucher_details").html(htmlDetails);
+            $("#btn_voucher_submit").prop('enabled', true);
         }
     });
 });
