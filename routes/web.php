@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessPlansController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CampController;
 use App\Http\Controllers\CampUserController;
@@ -100,6 +101,9 @@ Route::middleware('auth')->group(function () {
 
     //receipt print
     Route::get('/receipt-print', [SubscriptionController::class, 'receiptPrint'])->name('invoice.receiptPrint');
+
+    //access plan
+    Route::get('/view-accessplans', [AccessPlansController::class, 'index'])->name('access_plans.index');
 
     //subscriptions
     Route::get('/view-subscription', [SubscriptionController::class, 'show'])->name('subscription.show');
