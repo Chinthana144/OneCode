@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
+            $table->string('code', 8)->unique();
+            $table->date('expire_date');
             $table->timestamps();
         });
     }

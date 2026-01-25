@@ -34,8 +34,8 @@
 
 .detail_card{
     margin-top: 2px;
+    border: 1px solid dimgray;
     border-radius: 5px;
-    box-shadow: 1px 1px 2px dimgray;
     padding: 5px;
 }
 
@@ -71,4 +71,10 @@ Form set
 .div_form_set #cmb_customer{
     padding: 8px 4px;
     font-size: 18px;
+}
+
+.div_customer_input{
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
 }

@@ -94,6 +94,7 @@ Route::middleware('auth')->group(function () {
     //invoice
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
     Route::post('/store-subscription', [InvoiceController::class, 'storeSubscription'])->name('invoice.store_subscription');
+    Route::get('/getVoucherNo', [InvoiceController::class, 'getVoucherNo']);
 
     //receipt print
     Route::get('/receipt-print', [SubscriptionController::class, 'receiptPrint'])->name('invoice.receiptPrint');

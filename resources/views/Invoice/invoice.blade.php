@@ -69,7 +69,7 @@
                 <div class="div_form_set">
                     <form action="{{ route('invoice.store_subscription') }}" method="post">
                         @csrf
-                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
+                        <input type="hidden" name="hide_camp_id" id="hide_subscription_camp_id" value="{{ $camp->id }}">
                         <h5 class="badge bg-primary form_title">Subscriptions</h5><br>
                         <label for="">Select Customer</label>
                         <select name="cmb_customer" id="cmb_customer" class="form-control" style="width: 100%; font-size:18px; padding:8px 4px;">
@@ -108,9 +108,12 @@
                     <h5 class="badge bg-success form_title">Vouchers</h5>
                     <form action="" method="post">
                         @csrf
-                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
+                        <input type="hidden" name="hide_camp_id" id="hide_voucher_camp_id" value="{{ $camp->id }}">
                         <label for="">Customer Number</label>
-                        <input type="text" name="customer_no" class="form-control">
+                        <div class="div_customer_input">
+                            <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
+                            <button type="button" class="btn btn-success">Generate</button>
+                        </div>
 
                         <div id="div_voucher_details" class="detail_card">
                             <p>Voucher Details</p>
@@ -121,10 +124,9 @@
                             <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
                         </div>
 
-                        <button class="btn btn-">Issue Voucher</button>
+                        <button type="submit" class="btn btn-success">Issue Voucher</button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

@@ -64,4 +64,25 @@ class InvoiceController extends Controller
             return redirect()->route('invoice.index')->with('error', 'Subscription add failed!');
         }
     }//store
+
+    public function getVoucherNo()
+    {
+        $generated_code = $this->generateNumericVoucherCode();
+
+        //get labor packages
+        $labor_packages = Packages::where('customerType_id', 1)->get();
+
+        return response()->json([
+            'code' => $generated_code,
+            'packages' => $labor_packages,
+        ]);
+    }
+
+    //-------------------------- Functions --------------------------//
+    function generateNumericVoucherCode()
+    {
+        return (string) random_int(10000000, 99999999);
+    }
 }//class
+
+

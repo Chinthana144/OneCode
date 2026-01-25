@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     $("#cmb_customer").change(function () {
         var customer_id = $(this).val();
-        var camp_id = $("#hide_camp_id").val();
+        var camp_id = $("#hide_subscription_camp_id").val();
 
         $.ajax({
             type: "get",
@@ -112,45 +112,32 @@ $(document).ready(function () {
         }
     });
 
-    // $("#frm_subscription").submit(function (e) {
-    //     e.preventDefault();
-    //     var customer_id = $("#hide_customer_id").val();
-    //     var package_id = $("#hide_package_id").val();
+//=============================== Vouchers ===========================//
+$("#customer_no").change(function (e) {
+    // e.preventDefault();
+    var camp_id = $("#hide_voucher_camp_id").val();
+    var package_data = "<option value='0'>Select Package</option>";
+    $.ajax({
+        type: "get",
+        url: "/getVoucherNo",
+        data: {
+            camp_id: camp_id,
+        },
+        // dataType: "dataType",
+        success: function (response) {
+            console.log(response);
+            var voucher_code = response['code'];
+            var packages = response['packages'];
 
-    //     $.ajax({
-    //         type: "post",
-    //         url: "/store-subscription",
-    //         data: $(this).serialize(),
-    //         // dataType: "dataType",
-    //         success: function (response) {
-    //             console.log(response);
-    //             var has_success = response['success'];
-    //             // var message = response['message'];
+            $.each(packages, function (key, val) {
+                package_data += "<option value='"+val['id']+"'>Name: "+val['name']+" | "+val['duration']+"(days) | Price: "+val['price']+" AED</option>";
+            });
 
-    //             // alert('data - ' + has_success);
-
-    //             if(has_success)
-    //             {
-    //                 var subscription_id = response['subscription_id'];
-
-    //                 alert("Subscription added successfully. continue to QR code");
-
-    //                 window.location.reload();
-
-    //                 //print receipt
-    //                 // let printWindow = window.open('/receipt-print?subscription_id='+subscription_id, '_blank');
-
-    //                 // setTimeout(function(){
-    //                 //     window.location.href = '/invoice';
-    //                 // }, 500);
-    //             }
-    //             else
-    //             {
-    //                 alert('task failed...');
-    //             }
-    //         }
-    //     });
-    // });
+            $("#cmb_voucher_packages").empty();
+            $("#cmb_voucher_packages").append(package_data);
+        }
+    });
+});
 
 //=============================== Customer ===========================//
 
