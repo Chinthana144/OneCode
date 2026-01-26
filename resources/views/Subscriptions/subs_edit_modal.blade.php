@@ -45,11 +45,7 @@
                     </div>
                 </form>
 
-<<<<<<< HEAD
                 <div class="border border-success rounded mt-3 p-2">
-=======
-                <div class="mt-3 p-2">
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                     <h5 id="h5_reset_mac">
                         Reset Subscription
                     </h5>
@@ -57,7 +53,6 @@
                         @csrf
                         <input type="hidden" name="reset_subscription_id" id="reset_subscription_id" value="0">
                         <input type="hidden" name="reset_customer_id" id="reset_customer_id" value="0">
-<<<<<<< HEAD
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="text" id="mac_address" name="mac_address" class="form-control" readonly>
@@ -106,23 +101,12 @@
                                 <button type="submit" class="btn btn-primary w-100">Change Status</button>
                             </div>
                         </div>
-                        
-=======
 
-                        <button type="submit" class="btn btn-success mt-2">Reset Subscription</button>
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                     </form>
                 </div>
 
             </div>
 
-<<<<<<< HEAD
-=======
-            {{-- <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div> --}}
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
         </div>
     </div>
 </div>

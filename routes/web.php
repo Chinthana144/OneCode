@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.home');
     Route::get('/getBarchartData', [DashboardController::class, 'getBarchartData']);
     Route::get('/getDonutchartData', [DashboardController::class, 'getDonutchartData']);
+    Route::get('/getLineChartData', [DashboardController::class, 'getLineChartData']);
+    Route::get('/getPieChartData', [DashboardController::class, 'getPieChartData']);
 
     //camps
     Route::get('/camps', [CampController::class, 'index'])->name('camps.index');

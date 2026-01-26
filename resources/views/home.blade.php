@@ -6,17 +6,17 @@
         <div class="div_box" id="div_sale_box">
             <h6>Daily Sales</h6>
             <i class="bx bx-bar-chart fs-3"></i>
-            <h4>{{ $daily_subs_total }} AED</h4>
+            <h4>{{ $daily_invoice_total }} AED</h4>
         </div>
         <div class="div_box" id="div_subs_box">
             <h6>Subscriptions</h6>
             <i class="bx bx-clipboard fs-3"></i>
-            <h4>{{ $daily_subs_count }}</h4>
+            <h4>{{ $daily_invoice_count }}</h4>
         </div>
         <div class="div_box" id="div_month_sale_box">
             <h6>Monthly Sales</h6>
             <i class="bx bx-book-bookmark fs-3"></i>
-            <h4>{{ $monthly_subs_sale }} AED</h4>
+            <h4>{{ $monthly_invoice_sale }} AED</h4>
         </div>
         <div class="div_box" id="div_users_box">
             <h6>Users</h6>
@@ -31,21 +31,21 @@
             <h4>
                 <i class="bx bx-bar-chart fs-3"></i>
                 Daily Sales
-                {{ $daily_subs_total }} AED
+                {{ $daily_invoice_total }} AED
             </h4>
         </div>
         <div class="div_box" id="div_subs_box">
             <h4>
                 <i class="bx bx-clipboard fs-3"></i>
-                Subscriptions
-                {{ $daily_subs_count }}
+                Invoices
+                {{ $daily_invoice_count }}
             </h4>
         </div>
         <div class="div_box" id="div_month_sale_box">
             <h4>
                 <i class="bx bx-book-bookmark fs-3"></i>
                 Monthly Sales
-                {{ $monthly_subs_sale }} AED
+                {{ $monthly_invoice_sale }} AED
             </h4>
         </div>
         <div class="div_box" id="div_users_box">
@@ -58,17 +58,33 @@
     </div>
 
     <div class="row">
-        <div class="col-md-7 mt-2">
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" id="btn_7_days" class="btn btn-outline-primary btn-sm">7 days</button>
-            <button type="button" id="btn_14_days" class="btn btn-outline-primary btn-sm">14 days</button>
-            <button type="button" id="btn_30_days" class="btn btn-outline-primary btn-sm">30 days</button>
-        </div>
+        <div class="col-md-8 mt-2">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" id="btn_7_days" class="btn btn-outline-primary btn-sm">7 days</button>
+                <button type="button" id="btn_14_days" class="btn btn-outline-primary btn-sm">14 days</button>
+                <button type="button" id="btn_30_days" class="btn btn-outline-primary btn-sm">30 days</button>
+            </div>
             <div id="bar_chart" class="p-2"></div>
         </div>
 
-        <div class="col-md-5">
-            <div id="donut_chart" class="p-2"></div>
+        <div class="col-md-4">
+            <div style="width: 100%; padding:5px; overflow:hidden;">
+                <div id="donut_chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="btn-group" role="group" aria-label="Days variation">
+                <button type="button" id="btn_line_7_days" class="btn btn-outline-primary btn-sm">7 days</button>
+                <button type="button" id="btn_line_14_days" class="btn btn-outline-primary btn-sm">14 days</button>
+                <button type="button" id="btn_line_30_days" class="btn btn-outline-primary btn-sm">30 days</button>
+            </div>
+            <div id="line_chart" class="p-2"></div>
+        </div>
+        <div class="col-md-4">
+            <div id="pie_chart" class="p-2"></div>
         </div>
     </div>
 
