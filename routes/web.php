@@ -106,6 +106,10 @@ Route::middleware('auth')->group(function () {
 
     //access plan
     Route::get('/view-accessplans', [AccessPlansController::class, 'index'])->name('access_plans.index');
+    Route::get('/getOneAccessPlan', [AccessPlansController::class, 'getOneAccessPlan']);
+    Route::post('/resetStatus', [AccessPlansController::class, 'resetStatus'])->name('access_plan.reset_status');
+    Route::post('/campTransfer', [AccessPlansController::class, 'campTransfer'])->name('access_plan.camp_transfer');
+    Route::post('/changeExpireDate', [AccessPlansController::class, 'changeExpireDate'])->name('access_plan.change_expire');
 
     //subscriptions
     Route::get('/view-subscription', [SubscriptionController::class, 'show'])->name('subscription.show');

@@ -77,13 +77,21 @@
                                     <span class="badge bg-secondary">TRANSFERRED</span>
                                 @break
                             @endswitch
+                            <br>
+                            <span data-expire={{$access_plan->expire_at}} class="expiry"></span>
                         </td>
                         <td>{{ $access_plan->user->name }}</td>
                         @can('update', App\Models\AccessPlanes::class)
                             <td class="d-flex">
-                                <button class="btn btn-warning btn-sm ms-1 btn_reset_plan" data-id={{ $access_plan->id }}><i class="bx bx-reset"></i></button>
-                                <button class="btn btn-success btn-sm ms-1"><i class="bx bx-transfer-alt"></i></button>
-                                <button class="btn btn-info btn-sm ms-1"><i class="bx bx-time"></i></button>
+                                <button class="btn btn-warning btn-sm ms-1 btn_reset_plan" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                    <i class="bx bx-reset"></i>
+                                </button>
+                                <button class="btn btn-success btn-sm ms-1 btn_camp_change" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                    <i class="bx bx-transfer-alt"></i>
+                                </button>
+                                <button class="btn btn-info btn-sm ms-1 btn_expire_change" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                    <i class="bx bx-time"></i>
+                                </button>
                             </td>
                         @endcan
                         @can('delete', App\Models\AccessPlanes::class)
@@ -102,6 +110,8 @@
     </div>
 
     @include('AccessPlans.plan_reset_modal')
+    @include('AccessPlans.camp_change_modal')
+    @include('AccessPlans.expire_date_modal')
 
     <script src="{{ asset('js/access_plans.js') }}"></script>
 @endsection
