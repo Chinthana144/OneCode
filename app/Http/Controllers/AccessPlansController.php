@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\Customers;
+use App\Models\Subscriptions;
+use App\Models\Vouchers;
 use App\Services\HotspotUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -22,6 +24,66 @@ class AccessPlansController extends Controller
             ->paginate(10);
 
         return view('AccessPlans.access_plans_view', compact('access_plans', 'camps'));
+    }
+
+    public function accessPlanSearch(Request $request)
+    {
+        $camp_id = Session::get('active_camp_id');
+        $camps = Camps::where('status', 1)->get();
+
+        $search = $request->input('txt_search');
+
+        $access_plans = AccessPlanes::where('camp_id', $camp_id)
+            ->where(function ($query) use ($search) {
+
+                // Search by purchase date (string match)
+                $query->orWhere('purchaseDateTime', 'LIKE', "%{$search}%");
+
+                // Search by polymorphic relations
+                $query->orWhereHasMorph(
+                    'accessable',
+                    [Subscriptions::class, Vouchers::class],
+                    function ($q, $type) use ($search) {
+
+                        if ($type === Subscriptions::class) {
+                            $q->whereHas('customer', function ($c) use ($search) {
+                                $c->where('fullname', 'LIKE', "%{$search}%")
+                                ->orWhere('username', 'LIKE', "%{$search}%");
+                            });
+                        }
+
+                        if ($type === Vouchers::class) {
+                            $q->where('code', 'LIKE', "%{$search}%");
+                        }
+                    }
+                );
+            })
+            ->paginate(10);
+
+
+        return view('AccessPlans.access_plans_view', compact('access_plans', 'camps', 'search'));
+    }//search
+
+    public function destroy(Request $request)
+    {
+        $access_plan_id = $request->input('hide_access_plan_id');
+        $access_plan = AccessPlanes::find($access_plan_id);
+
+        $access_type = $access_plan->accessable_type;
+        if($access_type == 'App\Models\Subscriptions')
+        {
+            $subscription = Subscriptions::find($access_plan->accessable_id);
+            $subscription->delete();
+        }
+        if($access_type == 'App\Models\Vouchers')
+        {
+            $vouchers = Vouchers::find($access_plan->accessable_id);
+            $vouchers->delete();
+        }
+
+        $access_plan->delete();
+
+        return redirect()->route('access_plans.index')->with('success', 'Access Plan deleted successfully!');
     }
 
     public function resetStatus(Request $request)

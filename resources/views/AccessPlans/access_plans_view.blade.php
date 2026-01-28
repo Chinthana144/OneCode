@@ -6,6 +6,16 @@
             <h5>Access Plans</h5>
         </div>
         <div class="card-body">
+            <div id="div_search">
+                <form action="{{ route('access_plan.search') }}" method="get" class="float-end">
+                    @csrf
+                    <div class="input-group">
+                        <input type="text" name="txt_search" class="form-control" placeholder="Search..."
+                            value="{{ isset($search) ? $search : '' }}">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+            </div>
             <table class="table" id="tbl_access_plans">
                 <tr>
                     <th>Type</th>
@@ -96,7 +106,7 @@
                         @endcan
                         @can('delete', App\Models\AccessPlanes::class)
                             <td>
-                                <form action="" method="post">
+                                <form action="{{ route('access_plan.destroy') }}" method="post">
                                     @csrf
                                     <input type="hidden" name="hide_access_plan_id" value="{{ $access_plan->id }}">
                                     <button type="submit" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
@@ -106,6 +116,9 @@
                     </tr>
                 @endforeach
             </table>
+            <div>
+                {{ $access_plans->links() }}
+            </div>
         </div>
     </div>
 
