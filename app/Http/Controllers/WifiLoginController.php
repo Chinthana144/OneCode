@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\Customers;
+use App\Models\Packages;
 use App\Models\Subscriptions;
+use App\Models\Vouchers;
 use App\Services\HotspotUsers;
 use Illuminate\Http\Request;
 
@@ -183,6 +186,76 @@ class WifiLoginController extends Controller
         }//no customer
 
     }//login
+
+    public function authVoucher(Request $request)
+    {
+        date_default_timezone_set('Asia/Dubai');
+
+        $camp_id = $request->input('camp_id');
+        $mac = $request->input('mac');
+        $ip = $request->input('ip');
+        // $link_login = $request->input('link_login');
+
+        $code = $request->input('code');
+
+        //camp data
+        $camp_data = Camps::find($camp_id);
+        $host = $camp_data->mikritikIP;
+        $camp_user = $camp_data->mikrotikUsername;
+        $camp_pwd = $camp_data->mikrotikPassword;
+        $port = $camp_data->mikritikPort;
+
+        $hotspot_user = new HotspotUsers($host, $camp_user, $camp_pwd, $port);
+
+        /*
+        * find voucher in database voucher table
+        * check expire date
+        * find access plan from voucher id
+        * get mac address, bind mac address
+        * change access plan status to 2
+        * find package from package_id => get duration
+        * add login and expire date time
+        * save everything
+        */
+        $today = now();
+        $current_expire_date = now()->addDays(90);
+        $voucher = Vouchers::where('code', $code)
+            ->whereDate('expire_date', '<=', $current_expire_date)
+            ->first();
+
+        if($voucher){
+            //find access plan
+            $access_plan = AccessPlanes::where('accessable_type', Vouchers::class)
+                ->where('accessable_id', $voucher->id)
+                ->first();
+
+            //get package
+            $package = Packages::find($access_plan->package_id);
+            $duration = $package->duration;
+
+            $login_at = now();
+            $expire_at = now()->addDays($duration);
+
+            $access_plan->login_at = $login_at;
+            $access_plan->expire_at = $expire_at;
+            $access_plan->mac_address = $mac;
+            $access_plan->ip_address = $ip;
+            $access_plan->status = 2;
+
+            $access_plan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Access Plan activated successfully!'
+            ]);
+        }//has voucher
+        else{
+            return response()->json([
+                'success' => false,
+                'message' => 'unable to find voucher'
+            ]);
+        }//no voucher
+    }//auth voucher
 
     //use this login in future
     public function basicLogin(Request $request){
