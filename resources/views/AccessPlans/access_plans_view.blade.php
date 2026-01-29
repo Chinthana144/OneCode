@@ -93,13 +93,13 @@
                         <td>{{ $access_plan->user->name }}</td>
                         @can('update', App\Models\AccessPlanes::class)
                             <td class="d-flex">
-                                <button class="btn btn-warning btn-sm ms-1 btn_reset_plan" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                <button class="btn btn-warning btn-sm ms-1 btn_reset_plan" data-id={{ $access_plan->id }} @disabled($access_plan->status > 2)>
                                     <i class="bx bx-reset"></i>
                                 </button>
-                                <button class="btn btn-success btn-sm ms-1 btn_camp_change" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                <button class="btn btn-success btn-sm ms-1 btn_camp_change" data-id={{ $access_plan->id }} @disabled($access_plan->status > 2)>
                                     <i class="bx bx-transfer-alt"></i>
                                 </button>
-                                <button class="btn btn-info btn-sm ms-1 btn_expire_change" data-id={{ $access_plan->id }} @disabled($access_plan->status >= 2)>
+                                <button class="btn btn-info btn-sm ms-1 btn_expire_change" data-id={{ $access_plan->id }} @disabled($access_plan->status > 2)>
                                     <i class="bx bx-time"></i>
                                 </button>
                             </td>

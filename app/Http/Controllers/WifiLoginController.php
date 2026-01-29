@@ -10,6 +10,7 @@ use App\Models\Subscriptions;
 use App\Models\Vouchers;
 use App\Services\HotspotUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -186,6 +187,105 @@ class WifiLoginController extends Controller
         }//no customer
 
     }//login
+
+    public function authSubscription(Request $request)
+    {
+        date_default_timezone_set('Asia/Dubai');
+
+        /*
+        * find customer
+        * if(customer camp == current camp)
+        * {get active access_plan give access to active access_plan only}
+        */
+
+        $camp_id = $request->input('camp_id');
+        $mac = $request->input('mac');
+        $ip = $request->input('ip');
+        $link_login = $request->input('link_login');
+        $username = $request->input('cust_username');
+        $password = $request->input('cust_password');
+
+        //camp data
+        $camp_data = Camps::find($camp_id);
+        $host = $camp_data->mikritikIP;
+        $camp_user = $camp_data->mikrotikUsername;
+        $camp_pwd = $camp_data->mikrotikPassword;
+        $port = $camp_data->mikritikPort;
+
+        $hotspot_user = new HotspotUsers($host, $camp_user, $camp_pwd, $port);
+
+        //search customer by username
+        $customer = Customers::where('username', $username)
+            ->where('password', $password)
+            ->where('status', 1) //active
+            ->first();
+        $customer_id = $customer->id;
+
+        if($customer)
+        {
+            if($customer->camp_id == $camp_id)
+            {
+                //get subscription
+                $accessPlans = AccessPlanes::where('camp_id', $camp_id)
+                    ->where('status', 1)
+                    ->whereHasMorph(
+                        'accessable',
+                        [Subscriptions::class],
+                        function ($query) use ($customer_id){
+                            $query->where('customer_id', $customer_id);
+                        }
+                    )
+                    ->orderBy('id', 'DESC')
+                    ->first();
+
+                if($accessPlans)
+                {
+                    //package
+                    $package_id = $accessPlans->package_id;
+                    $package = Packages::find($package_id);
+                    $duration = $package->duration;
+
+                    $accessPlans->mac_address = $mac;
+                    $accessPlans->ip_address = $ip;
+                    $accessPlans->login_at ??= Carbon::now();
+                    $accessPlans->expire_at ??= Carbon::now()->addDays($duration);
+                    $accessPlans->status = 2;
+
+                    $accessPlans->save();
+
+                    //bind mac address
+                    $hotspot_user->bindMacAddressToUser($username, $mac);
+
+                    //remove these when going live
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'subscription added successfully!',
+                    ]);
+
+                    //redirect uri
+                    // $redirectUrl = 'https://cloudtik.trizent.net/userlogin?id=' . $customer->id;
+
+                    // return redirect($redirectUrl);
+                }//has access plan
+                else{
+                    return redirect()->away(
+                        $link_login . '?error='. urlencode('No active subscription found')
+                    );
+                }//no active plan
+            }//same camp
+            else
+            {
+                return redirect()->away(
+                    $link_login . '?error='. urlencode('Access denied! Invalid camp ID')
+                );
+            }//wrong camp
+        }//has customer
+        else{
+            return redirect()->away(
+                $link_login . '?error='. urlencode('Invalid username or password')
+            );
+        }//not customer
+    }//auth subscription
 
     public function authVoucher(Request $request)
     {
