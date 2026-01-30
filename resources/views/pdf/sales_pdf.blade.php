@@ -52,30 +52,32 @@
             <tr>
                 <th>No</th>
                 <th>Date</th>
-                <th>Customer</th>
-                <th>Contatc No</th>
+                <th>Type</th>
+                <th>Username</th>
+                <th>Voucher</th>
                 <th>Package</th>
                 <th>Duration</th>
                 <th>Price</th>
             </tr>
         </thead>
         <tbody>
-             @foreach ($data as $sale)
+             @foreach ($rows as $sale)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ Str::substr($sale->purchaseDate, 0, 10) }}</td>
-                    <td>{{ $sale->fullname }}</td>
-                    <td>{{ $sale->username }}</td>
-                    <td>{{ $sale->name }}</td>
-                    <td>{{ $sale->duration }} days</td>
-                    <td style="text-align:right;">{{ $sale->price }}</td>
+                    <td>{{ $sale['purchase_date'] }}</td>
+                    <td>{{ $sale['Type'] }}</td>
+                    <td>{{ $sale['username'] }}</td>
+                    <td>{{ $sale['voucher_code'] }}</td>
+                    <td>{{ $sale['package_name'] }}</td>
+                    <td>{{ $sale['duration'] }} days</td>
+                    <td style="text-align:right;">{{ $sale['price'] }}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6" style="text-align: right;"><strong>Total Sales:</strong></td>
-                <td style="text-align:right;"><strong>{{ $data->sum('price') }}</strong></td>
+                <td colspan="7" style="text-align: right;"><strong>Total Sales:</strong></td>
+                <td style="text-align:right;"><strong>{{ $rows->sum('price') }}</strong></td>
             </tr>
         </tfoot>
     </table>

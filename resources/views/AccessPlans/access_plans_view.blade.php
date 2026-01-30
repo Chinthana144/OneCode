@@ -88,7 +88,7 @@
                                 @break
                             @endswitch
                             <br>
-                            <span data-expire={{$access_plan->expire_at}} class="expiry"></span>
+                            <span data-expire="{{$access_plan->expire_at}}" class="expiry"></span>
                         </td>
                         <td>{{ $access_plan->user->name }}</td>
                         @can('update', App\Models\AccessPlanes::class)

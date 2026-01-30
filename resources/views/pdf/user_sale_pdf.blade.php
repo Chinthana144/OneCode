@@ -53,7 +53,7 @@
                 <th>No</th>
                 <th>Date</th>
                 <th>Customer</th>
-                <th>Contatc No</th>
+                <th>Username</th>
                 <th>Package</th>
                 <th>Duration</th>
                 <th>Price</th>
@@ -64,7 +64,13 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ Str::substr($sale->purchaseDate, 0, 10) }}</td>
-                    <td>{{ $sale->fullname }}</td>
+                    <td>
+                        @if ($sale->accessable_type == 'App\Models\Subscriptions')
+                            {{$sale->accessable->customer->fullname}}
+                        @else
+                            {{$sale->accessable->code}}
+                        @endif
+                    </td>
                     <td>{{ $sale->username }}</td>
                     <td>{{ $sale->name }}</td>
                     <td>{{ $sale->duration }} days</td>
