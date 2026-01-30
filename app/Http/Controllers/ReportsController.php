@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Exports\SubscriptionExport;
+use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\CampUsers;
 use App\Models\Subscriptions;
 use App\Models\User;
+use App\Models\Vouchers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -42,9 +44,13 @@ class ReportsController extends Controller
         $camp = Camps::find($camp_id);
 
         $today = date('Y-m-d');
-        $sales = Subscriptions::where('camp_id', $camp_id)
-            ->whereDate('purchaseDateTime', $today)
+        $sales = AccessPlanes::where('camp_id', $camp_id)
+            ->whereDate('purchaseDate', $today)
             ->paginate(10);
+
+        // $sales = Subscriptions::where('camp_id', $camp_id)
+        //     ->whereDate('purchaseDateTime', $today)
+        //     ->paginate(10);
 
         return view('Reports.rpt_daily_sales', compact('camp', 'sales'));
     }
@@ -62,19 +68,34 @@ class ReportsController extends Controller
 
         switch($request->action){
             case 'search':
-                $sales = Subscriptions::where('camp_id', $camp_id)
-                    ->whereBetween('purchaseDateTime', [$start_date, $end_date])
-                    ->paginate(10);
+                $sales = AccessPlanes::where('camp_id', $camp_id)
+                    ->whereBetween('purchaseDate', [$start_date, $end_date])
+                    ->orderBy('id', 'ASC')
+                    ->paginate(5);
 
                 return view('Reports.rpt_daily_sales', compact('camp', 'sales', 'start_date', 'end_date'));
                 break;
 
             case 'excel':
-                $data = Subscriptions::join('customers', 'subscriptions.customer_id', '=', 'customers.id')
-                    ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::with([
+                        'accessable',
+                        'accessable.customer'
+                    ])
+                    ->where('camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
-                    ->get(['subscriptions.id as id', 'purchaseDate', 'customers.fullname', 'customers.username', 'packages.name', 'packages.duration', 'subscriptions.price']);
+                    ->whereHasMorph(
+                        'accessable',
+                        [Subscriptions::class, Vouchers::class]
+                    )
+                    ->get();
+
+                dd($data);
+
+                // $data = Accessplanes::join('customers', 'access_planes.customer_id', '=', 'customers.id')
+                //     ->join('packages', 'access_planes.package_id', '=', 'packages.id')
+                //     ->where('access_planes.camp_id', $camp_id)
+                //     ->whereBetween('purchaseDate', [$start_date, $end_date])
+                //     ->get(['access_planes.id as id', 'purchaseDate', 'accessable.customer.fullname', 'customers.username', 'packages.name', 'packages.duration', 'access_planes.price']);
 
                 return Excel::download(
                     new class($data) implements FromCollection, WithHeadings {
