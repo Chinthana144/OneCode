@@ -117,12 +117,15 @@
                             <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
                         </div>
 
+                        <button type="button" id="btn_generate_code" class="btn btn-success w-50">Generate Code</button>
+
                         <div class="detail_card">
                             <p id="p_voucher_details">Voucher Details</p>
                         </div>
 
-                        <input type="hidden" name="hide_voucher_no" id="hide_voucher_no">
+                        <input type="hidden" name="hide_voucher_id" id="hide_voucher_id">
                         <button type="submit" class="btn btn-success mt-2" id="btn_voucher_submit">Issue Voucher</button>
+                        <a href="{{ route('invoice.index') }}" class="btn btn-success float-end">Next</a>
                     </form>
                 </div>
             </div>

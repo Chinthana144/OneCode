@@ -148,14 +148,44 @@ $("#cmb_voucher_packages").change(function (e) {
         // dataType: "dataType",
         success: function (response) {
             console.log(response);
+
             let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
             htmlDetails += "Package: <b>"+response['package']['name']+"</b><br>";
             htmlDetails += "Duration: <b>"+response['package']['duration']+"</b><br>";
             htmlDetails += "Package: <b>"+response['package']['name']+"</b>";
 
-            $("#hide_voucher_no").val(response['code']);
+            $("#hide_voucher_id").val(response['voucher_id']);
             $("#p_voucher_details").html(htmlDetails);
             $("#btn_voucher_submit").prop('enabled', true);
+        }
+    });
+});
+
+$("#btn_generate_code").click(function (e) {
+    e.preventDefault();
+    var customerNo = $("#customer_no").val();
+    var packageID = $("#cmb_voucher_packages").val();
+
+    $.ajax({
+        type: "get",
+        url: "/generateVoucherCode",
+        data: {
+            username: customerNo,
+            package_id: packageID,
+        },
+        // dataType: "dataType",
+        success: function (response) {
+            console.log(response);
+
+            let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
+            htmlDetails += "Package: <b>"+response['package']+"</b><br>";
+            htmlDetails += "Duration: <b>"+response['duration']+"</b><br>";
+            htmlDetails += "Price: <b>"+response['price']+"</b>";
+
+            $("#hide_voucher_id").val(response['voucher_id']);
+            $("#p_voucher_details").html(htmlDetails);
+            $("#btn_voucher_submit").prop('enabled', true);
+
         }
     });
 });

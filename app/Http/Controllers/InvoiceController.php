@@ -68,6 +68,8 @@ class InvoiceController extends Controller
 
     public function storeVoucher(Request $request)
     {
+        date_default_timezone_set('Asia/Dubai');
+
         $user_id = auth()->user()->id;
         $camp_id = Session::get('active_camp_id');
 
@@ -81,49 +83,51 @@ class InvoiceController extends Controller
 
         $status = 1; //Active package
 
-        $generated_code = $request->input('hide_voucher_no');
+        $voucher_id = $request->input("hide_voucher_id");
+        $voucher = Vouchers::find($voucher_id);
+        // $generated_code = $request->input('hide_voucher_no');
         $expire_at = now()->addDays(90);
 
-        //check voucher if exists
-        if(Vouchers::where('code', $generated_code)
-                ->whereBetween('expire_date', [now(), $expire_at])
-                ->exists())
-        {
-            return redirect()->route('invoice.index')->with('error', 'Subscription add failed!');
-        }//code exist abrot
-        else{
-            $voucher = Vouchers::create([
-                'code' => $generated_code,
-                'expire_date' => $expire_at,
-            ]);
+        //accessable
+        $accessable_type = Vouchers::class;
+        $accessable_id = $voucher_id;
 
-            //accessable
-            $accessable_type = Vouchers::class;
-            $accessable_id = $voucher->id;
+        $invoice = AccessPlanes::create([
+            'camp_id' => $camp_id,
+            'user_id' => $user_id,
+            'package_id' => $package_id,
+            'paymethod_id' => 1, //default cash
+            'accessable_type' => $accessable_type,
+            'accessable_id' => $accessable_id,
+            'purchaseDate' => $purchased_date,
+            'purchaseDateTime' => $purchased_time,
+            'price' => $price,
+            'status' => 1, //Active status
+        ]);
 
-            $invoice = AccessPlanes::create([
-                'camp_id' => $camp_id,
-                'user_id' => $user_id,
-                'package_id' => $package_id,
-                'paymethod_id' => 1, //default cash
-                'accessable_type' => $accessable_type,
-                'accessable_id' => $accessable_id,
-                'purchaseDate' => $purchased_date,
-                'purchaseDateTime' => $purchased_time,
-                'price' => $price,
-                'status' => 1, //Active status
-            ]);
+        $voucher->status = 2; //active status
+        $voucher->save();
 
-            return redirect()->route('invoice.index')->with('success', 'Voucher added successfully!');
-        }//unique code
+        return redirect()->route('invoice.index')->with('success', 'Voucher added successfully!');
     }//store voucher
 
-    public function getVoucherNo(Request $request)
+    public function generateVoucherCode(Request $request)
     {
-        $package_id = $request->input('package_id');
-        $package = Packages::find($package_id)->first();
+        date_default_timezone_set('Asia/Dubai');
 
+        $username = $request->input('username');
+        $package_id = $request->input('package_id');
+
+        $user_id = auth()->user()->id;
+        $camp_id = Session::get('active_camp_id');
+
+        $purchased_date = date('Y-m-d');
+        $purchased_time = date('Y-m-d H:i:s');
         $expire_at = now()->addDays(90);
+
+        //get price
+        $package = Packages::find($package_id);
+        $price = $package->price;
 
         //validate unique
         do{
@@ -134,11 +138,39 @@ class InvoiceController extends Controller
                 ->exists()
             );
 
+        //create voucher
+        $voucher = Vouchers::create([
+            'username' => $username,
+            'code' => $generated_code,
+            'expire_date' => $expire_at,
+            'status' => 1, //pending
+        ]);
+
+        //accessable
+        $accessable_type = Vouchers::class;
+        $accessable_id = $voucher->id;
+
+        $invoice = AccessPlanes::create([
+            'camp_id' => $camp_id,
+            'user_id' => $user_id,
+            'package_id' => $package_id,
+            'paymethod_id' => 1, //default cash
+            'accessable_type' => $accessable_type,
+            'accessable_id' => $accessable_id,
+            'purchaseDate' => $purchased_date,
+            'purchaseDateTime' => $purchased_time,
+            'price' => $price,
+            'status' => 1, //Active status
+        ]);
+
         return response()->json([
             'code' => $generated_code,
-            'package' => $package,
+            'package' => $package->name,
+            'duration' => $package->duration,
+            'price' => $package->price,
         ]);
-    }
+
+    }//generate voucher code
 
     //-------------------------- Functions --------------------------//
     function generateNumericVoucherCode()
