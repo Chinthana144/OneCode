@@ -371,28 +371,44 @@ class ReportsController extends Controller
             break;
 
             case 'excel':
-                $data = AccessPlanes::join('customers', 'subscriptions.customer_id', '=', 'customers.id')
-                    ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
-                    ->join('users', 'subscriptions.user_id', '=', 'users.id')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::join('packages', 'access_planes.package_id', '=', 'packages.id')
+                    ->join('users', 'access_planes.user_id', '=', 'users.id')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
-                    ->where('subscriptions.user_id', $selected_user)
-                    ->get(['subscriptions.id as id', 'purchaseDate', 'customers.username', 'packages.name', 'packages.duration', 'subscriptions.price', 'users.name as user_name']);
+                    ->where('access_planes.user_id', $selected_user)
+                    ->get();
+
+                $rows = $data->map(function($plan){
+                    return [
+                        'id' => $plan->id,
+                        'datetime' => $plan->purchaseDateTime,
+                        'customer' =>$plan->accessable instanceof Subscriptions
+                            ? optional($plan->accessable->customer)->fullname
+                            : $plan->accessable->username,
+                        'username' =>$plan->accessable instanceof Subscriptions
+                            ? optional($plan->accessable->customer)->username
+                            : $plan->accessable->code,
+                        'package' => $plan->package->name,
+                        'duration' => $plan->package->duration,
+                        'price' => $plan->price,
+                        'salesman' => $plan->user->name,
+                    ];
+                });
 
                 return Excel::download(
-                    new class($data) implements FromCollection, WithHeadings {
-                        protected $data;
-                        public function __construct($data)
+                    new class($rows) implements FromCollection, WithHeadings {
+                        protected $rows;
+                        public function __construct($rows)
                         {
-                            $this->data = $data;
+                            $this->rows = $rows;
                         }
                         public function collection()
                         {
-                            return $this->data;
+                            return $this->rows;
                         }
                         public function headings(): array
                         {
-                            return ['ID', 'Date Time', 'Customer', 'Package Name', 'Duration (days)', 'Price', 'Salesman'];
+                            return ['ID', 'Date Time', 'Customer', 'username', 'Package Name', 'Duration (days)', 'Price', 'Salesman'];
                         }
                     },
                     'user_sales_from_'.$start_date.'_to_'. $end_date .'.xlsx'
@@ -430,11 +446,11 @@ class ReportsController extends Controller
             ->get();
         $user_id = $users->first()->id ?? 1;
 
-        $sales = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
-            ->where('subscriptions.camp_id', $camp_id)
+        $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
+            ->where('access_planes.camp_id', $camp_id)
             ->where('user_id', $user_id)
             ->whereDate('purchaseDate', $today)
-            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+            ->join('packages', 'access_planes.package_id', '=', 'packages.id')
             ->groupBy('package_id', 'packages.name', 'packages.duration')
             ->paginate(10);
 
@@ -462,11 +478,11 @@ class ReportsController extends Controller
 
         switch ($request->action) {
             case 'search':
-                $sales = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
                     ->where('user_id', $selected_user)
-                    ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+                    ->join('packages', 'access_planes.package_id', '=', 'packages.id')
                     ->groupBy('package_id', 'packages.name', 'packages.duration')
                     ->paginate(10);
 
@@ -474,11 +490,11 @@ class ReportsController extends Controller
             break;
 
             case 'excel':
-                $data = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
                     ->where('user_id', $selected_user)
-                    ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+                    ->join('packages', 'access_planes.package_id', '=', 'packages.id')
                     ->groupBy('package_id', 'packages.name', 'packages.duration')
                     ->get();
 
@@ -502,11 +518,11 @@ class ReportsController extends Controller
                 );
             break;
             case 'pdf':
-                $data = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, packages.name as package_name, packages.duration as package_duration')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
                     ->where('user_id', $selected_user)
-                    ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
+                    ->join('packages', 'access_planes.package_id', '=', 'packages.id')
                     ->groupBy('package_id', 'packages.name', 'packages.duration')
                     ->get();
 
@@ -522,10 +538,10 @@ class ReportsController extends Controller
         $camp = Camps::find($camp_id);
         $today = date('Y-m-d');
 
-        $sales = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, users.name as user_name')
-            ->where('subscriptions.camp_id', $camp_id)
+        $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
+            ->where('access_planes.camp_id', $camp_id)
             ->whereDate('purchaseDate', $today)
-            ->join('users', 'subscriptions.user_id', '=', 'users.id')
+            ->join('users', 'access_planes.user_id', '=', 'users.id')
             ->groupBy('user_id', 'users.name')
             ->paginate(10);
 
@@ -545,10 +561,10 @@ class ReportsController extends Controller
 
         switch ($request->action) {
             case 'search':
-                $sales = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, users.name as user_name')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
-                    ->join('users', 'subscriptions.user_id', '=', 'users.id')
+                    ->join('users', 'access_planes.user_id', '=', 'users.id')
                     ->groupBy('user_id', 'users.name')
                     ->paginate(10);
 
@@ -556,10 +572,10 @@ class ReportsController extends Controller
             break;
 
             case 'excel':
-                $data = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, users.name as user_name')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
-                    ->join('users', 'subscriptions.user_id', '=', 'users.id')
+                    ->join('users', 'access_planes.user_id', '=', 'users.id')
                     ->groupBy('user_id', 'users.name')
                     ->get();
 
@@ -584,10 +600,10 @@ class ReportsController extends Controller
             break;
 
             case 'pdf':
-                $data = Subscriptions::selectRaw('COUNT(*) AS row_count, SUM(subscriptions.price) as total_sales, users.name as user_name')
-                    ->where('subscriptions.camp_id', $camp_id)
+                $data = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
+                    ->where('access_planes.camp_id', $camp_id)
                     ->whereBetween('purchaseDate', [$start_date, $end_date])
-                    ->join('users', 'subscriptions.user_id', '=', 'users.id')
+                    ->join('users', 'access_planes.user_id', '=', 'users.id')
                     ->groupBy('user_id', 'users.name')
                     ->get();
                 $pdf = Pdf::loadView('pdf.user_sales_summary_pdf', compact('data','camp_name','start_date','end_date'));
@@ -595,4 +611,18 @@ class ReportsController extends Controller
             break;
         }//switch
     } //rptUserSalesSummarySearch
+
+    public function showCampSaleSummary()
+    {
+        $camp_id = Session::get('active_camp_id');
+        $camp = Camps::find($camp_id);
+        $today = date('Y-m-d');
+
+        $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
+            ->where('access_planes.camp_id', $camp_id)
+            ->whereDate('purchaseDate', $today)
+            ->join('users', 'access_planes.user_id', '=', 'users.id')
+            ->groupBy('user_id', 'users.name')
+            ->paginate(10);
+    }
 }//class

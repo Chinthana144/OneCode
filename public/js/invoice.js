@@ -134,32 +134,32 @@ $("#customer_no").change(function (e) {
     });
 });
 
-$("#cmb_voucher_packages").change(function (e) {
-    e.preventDefault();
-    var package_id = $(this).val();
-    var customer_no = $("#customer_no").val();
+// $("#cmb_voucher_packages").change(function (e) {
+//     e.preventDefault();
+//     var package_id = $(this).val();
+//     var customer_no = $("#customer_no").val();
 
-    $.ajax({
-        type: "get",
-        url: "/getVoucherNo",
-        data: {
-            package_id: package_id,
-        },
-        // dataType: "dataType",
-        success: function (response) {
-            console.log(response);
+//     $.ajax({
+//         type: "get",
+//         url: "/getVoucherNo",
+//         data: {
+//             package_id: package_id,
+//         },
+//         // dataType: "dataType",
+//         success: function (response) {
+//             console.log(response);
 
-            let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
-            htmlDetails += "Package: <b>"+response['package']['name']+"</b><br>";
-            htmlDetails += "Duration: <b>"+response['package']['duration']+"</b><br>";
-            htmlDetails += "Package: <b>"+response['package']['name']+"</b>";
+//             let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
+//             htmlDetails += "Package: <b>"+response['package']['name']+"</b><br>";
+//             htmlDetails += "Duration: <b>"+response['package']['duration']+"</b><br>";
+//             htmlDetails += "Package: <b>"+response['package']['name']+"</b>";
 
-            $("#hide_voucher_id").val(response['voucher_id']);
-            $("#p_voucher_details").html(htmlDetails);
-            $("#btn_voucher_submit").prop('enabled', true);
-        }
-    });
-});
+//             $("#hide_voucher_id").val(response['voucher_id']);
+//             $("#p_voucher_details").html(htmlDetails);
+//             $("#btn_voucher_submit").prop('enabled', true);
+//         }
+//     });
+// });
 
 $("#btn_generate_code").click(function (e) {
     e.preventDefault();

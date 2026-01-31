@@ -106,27 +106,22 @@
             <div class="col-md-6">
                 <div class="div_form_set">
                     <h5 class="badge bg-success form_title">Vouchers</h5>
-                    <form action="{{ route('invoice.store_voucher') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="hide_camp_id" id="hide_voucher_camp_id" value="{{ $camp->id }}">
-                        <label for="">Customer Number</label>
-                        <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
+                    <input type="hidden" name="hide_camp_id" id="hide_voucher_camp_id" value="{{ $camp->id }}">
+                    <label for="">Customer Number</label>
+                    <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
 
-                        <div id="div_packages">
-                            <label for="">Customer Packages</label>
-                            <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
-                        </div>
+                    <div id="div_packages">
+                        <label for="">Customer Packages</label>
+                        <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
+                    </div>
 
-                        <button type="button" id="btn_generate_code" class="btn btn-success w-50">Generate Code</button>
+                    <button type="button" id="btn_generate_code" class="btn btn-success w-50">Generate Code</button>
 
-                        <div class="detail_card">
-                            <p id="p_voucher_details">Voucher Details</p>
-                        </div>
+                    <div class="detail_card">
+                        <p id="p_voucher_details">Voucher Details</p>
+                    </div>
 
-                        <input type="hidden" name="hide_voucher_id" id="hide_voucher_id">
-                        <button type="submit" class="btn btn-success mt-2" id="btn_voucher_submit">Issue Voucher</button>
-                        <a href="{{ route('invoice.index') }}" class="btn btn-success float-end">Next</a>
-                    </form>
+                    <a href="{{ route('invoice.index') }}" class="btn btn-success mt-2">Next -></a>
                 </div>
             </div>
         </div>

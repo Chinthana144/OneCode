@@ -53,13 +53,13 @@ class AccessPlansController extends Controller
                         }
 
                         if ($type === Vouchers::class) {
-                            $q->where('code', 'LIKE', "%{$search}%");
+                            $q->where('code', 'LIKE', "%{$search}%")
+                                ->orWhere('username', 'LIKE', "%{$search}%");
                         }
                     }
                 );
             })
             ->paginate(10);
-
 
         return view('AccessPlans.access_plans_view', compact('access_plans', 'camps', 'search'));
     }//search

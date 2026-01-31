@@ -68,7 +68,7 @@
                             {{ $access_plan->login_at ?? "N/A" }} <br>
                             {{ $access_plan->expire_at ?? "N/A" }}
                         </td>
-                        <td>{{ $access_plan->price }}</td>
+                        <td><b>{{ $access_plan->price }}</b></td>
                         <td>
                             @switch($access_plan->status)
                                 @case(1)

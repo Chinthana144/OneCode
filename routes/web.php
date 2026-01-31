@@ -149,6 +149,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/rpt_user_package_summary_search', [ReportsController::class, 'rptUserPackageSummarySearch'])->name('rptUserPackageSummary.search');
     Route::get('/rpt_user_sales_summary', [ReportsController::class, 'showUserSalesSummaryReport']);
     Route::get('/rpt_user_sales_summary_search', [ReportsController::class, 'rptUserSalesSummarySearch'])->name('rptUserSalesSummary.search');
+    Route::get('/rpt_camp_sale_summary', [ReportsController::class, 'rptCampSaleSummary']);
 
     //client side reports
     Route::get('/sale_reports', [ClientReportController::class, 'showSaleReports']);

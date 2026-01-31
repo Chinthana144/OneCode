@@ -69,9 +69,9 @@ class PackageController extends Controller
             'name' => 'required|max:40',
             'duration' => 'required|integer',
             'price' => 'required|numeric',
-            'bandwidth' => 'required|max:6',
-            'downloadlimit' => 'required|max:6',
-            'uploadlimit' => 'required|max:6',
+            'bandwidth' => 'max:6',
+            'downloadlimit' => 'max:6',
+            'uploadlimit' => 'max:6',
         ]);
 
         $stat = $request->has('chk_package_stat') ? 1 : 0;
@@ -82,9 +82,9 @@ class PackageController extends Controller
             'name' => $validated['name'],
             'duration' => $validated['duration'],
             'price' => $validated['price'],
-            'bandwidth' => $validated['bandwidth'],
-            'downloadlimit' => $validated['downloadlimit'],
-            'uploadlimit' => $validated['uploadlimit'],
+            'bandwidth' => $validated['bandwidth'] ?? 0,
+            'downloadlimit' => $validated['downloadlimit'] ?? 0,
+            'uploadlimit' => $validated['uploadlimit'] ?? 0,
             'status' => $stat,
         ]);
 
@@ -123,9 +123,9 @@ class PackageController extends Controller
         $package->name = $request->input('name');
         $package->duration = $request->input('duration');
         $package->price = $request->input('price');
-        $package->bandwidth = $request->input('bandwidth');
-        $package->downloadlimit = $request->input('downloadlimit');
-        $package->uploadlimit = $request->input('uploadlimit');
+        $package->bandwidth = $request->input('bandwidth') ?? 0;
+        $package->downloadlimit = $request->input('downloadlimit') ?? 0;
+        $package->uploadlimit = $request->input('uploadlimit') ?? 0;
         $package->status = $request->has('chk_package_stat') ? 1 : 0;
 
         $package->save();

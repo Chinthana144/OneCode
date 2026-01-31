@@ -153,7 +153,7 @@ function loadDonutChart()
             var chart = {
                 series: total_sales,
                 chart: {
-                    width: 350,
+                    width: 380,
                     type: 'donut',
                   },
                 plotOptions: {
@@ -285,7 +285,10 @@ function loadPieChart()
                     width: 380,
                     type: 'pie',
                 },
-                    labels: labels,
+                title: {
+                    text: 'Subscriptions vs Vouchers sale'
+                },
+                labels: labels,
                 responsive: [{
                 breakpoint: 480,
                 options: {

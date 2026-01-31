@@ -129,6 +129,7 @@ class InvoiceController extends Controller
         $package = Packages::find($package_id);
         $price = $package->price;
 
+        $generated_code = "";
         //validate unique
         do{
             $generated_code = $this->generateNumericVoucherCode();
