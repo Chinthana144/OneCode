@@ -1,7 +1,12 @@
 //starting off with CloudTik
 
 //pending list changes
-* packages modal remove Bandwidth and other unnecessury things
-* schedule check from access_planes table
+* packages modal remove Bandwidth and other unnecessury things ----------------- Done
+* schedule check from access_planes table -------------------------------------- Done
 * Voucher table add customer name - edit access plane page --------------------- Done
 
+// Client side
+* client database table
+* client dashboard
+* client reports
+* client access plans

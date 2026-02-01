@@ -614,15 +614,139 @@ class ReportsController extends Controller
 
     public function showCampSaleSummary()
     {
-        $camp_id = Session::get('active_camp_id');
-        $camp = Camps::find($camp_id);
         $today = date('Y-m-d');
+        $sales = [];
+        $camps = Camps::where('status', 1)->get();
 
-        $sales = AccessPlanes::selectRaw('COUNT(*) AS row_count, SUM(access_planes.price) as total_sales, users.name as user_name')
-            ->where('access_planes.camp_id', $camp_id)
-            ->whereDate('purchaseDate', $today)
-            ->join('users', 'access_planes.user_id', '=', 'users.id')
-            ->groupBy('user_id', 'users.name')
-            ->paginate(10);
-    }
+        foreach($camps as $camp)
+        {
+            $subscription_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereDate('purchaseDate', $today)
+                ->where('accessable_type', 'App\Models\Subscriptions')
+                ->sum('price');
+
+            $subscription_count = AccessPlanes::where('camp_id', $camp->id)
+                ->whereDate('purchaseDate', $today)
+                ->where('accessable_type', 'App\Models\Subscriptions')
+                ->count('price');
+
+            $voucher_count = AccessPlanes::where('camp_id', $camp->id)
+                ->whereDate('purchaseDate', $today)
+                ->where('accessable_type', 'App\Models\Vouchers')
+                ->count('price');
+
+            $voucher_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereDate('purchaseDate', $today)
+                ->where('accessable_type', 'App\Models\Vouchers')
+                ->sum('price');
+
+            $total_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereDate('purchaseDate', $today)
+                ->sum('price');
+
+            $sales [] = [
+                'camp' => $camp->name,
+                'subscription_count' => $subscription_count,
+                'subscription_sale' => $subscription_sale,
+                'voucher_count' => $voucher_count,
+                'voucher_sale' => $voucher_sale,
+                'total_sale' => $total_sale,
+            ];
+        }//foreach
+
+        return view('Reports.rpt_camp_sale_summary', compact('sales'));
+    }//show camp sale summary
+
+    public function rptCampSaleSummarySearch(Request $request){
+        $today = date('Y-m-d');
+        $sales = [];
+        $camp_total = 0;
+        $camps = Camps::where('status', 1)->get();
+
+        $start_date = $request->input('start_date') ?? $today;
+        $end_date = $request->input('end_date') ?? $today;
+
+        foreach($camps as $camp)
+        {
+            $subscription_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereBetween('purchaseDate', [$start_date, $end_date])
+                ->where('accessable_type', 'App\Models\Subscriptions')
+                ->sum('price');
+
+            $subscription_count = AccessPlanes::where('camp_id', $camp->id)
+                ->whereBetween('purchaseDate', [$start_date, $end_date])
+                ->where('accessable_type', 'App\Models\Subscriptions')
+                ->count('price');
+
+            $voucher_count = AccessPlanes::where('camp_id', $camp->id)
+                ->whereBetween('purchaseDate', [$start_date, $end_date])
+                ->where('accessable_type', 'App\Models\Vouchers')
+                ->count('price');
+
+            $voucher_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereBetween('purchaseDate', [$start_date, $end_date])
+                ->where('accessable_type', 'App\Models\Vouchers')
+                ->sum('price');
+
+            $total_sale = AccessPlanes::where('camp_id', $camp->id)
+                ->whereBetween('purchaseDate', [$start_date, $end_date])
+                ->sum('price');
+
+            $sales [] = [
+                'camp' => $camp->name,
+                'subscription_count' => $subscription_count,
+                'subscription_sale' => $subscription_sale,
+                'voucher_count' => $voucher_count,
+                'voucher_sale' => $voucher_sale,
+                'total_sale' => $total_sale,
+            ];
+
+            $camp_total += floatVal($total_sale);
+        }//foreach
+
+        switch ($request->action) {
+            case 'search':
+                return view('Reports.rpt_camp_sale_summary', compact('sales', 'start_date', 'end_date'));
+            break;
+
+            case 'excel':
+
+                $salesForExcel = collect($sales)->map(function ($row) {
+                    return [
+                        $row['camp'],
+                        $row['subscription_count'],
+                        $row['subscription_sale'],
+                        $row['voucher_count'],
+                        $row['voucher_sale'],
+                        $row['total_sale'],
+                    ];
+                });
+
+                return Excel::download(
+                    new class($salesForExcel) implements FromCollection, WithHeadings {
+                        protected $salesForExcel;
+                        public function __construct($salesForExcel)
+                        {
+                            $this->salesForExcel = $salesForExcel;
+                        }
+                        public function collection()
+                        {
+                            return $this->salesForExcel;
+                        }
+                        public function headings(): array
+                        {
+                            return ['Camp', 'Subscription Count', 'Subscription Sale', 'Voucher Count', 'Voucher Sale', 'Total Sale'];
+                        }
+                    },
+                    'camps_sales_summary_from_'.$start_date.'_to_'. $end_date .'.xlsx'
+                );
+            break;
+
+            case 'pdf':
+                $pdf = Pdf::loadView('pdf.camp_sale_summary_pdf', compact('sales', 'start_date','end_date', 'camp_total'));
+                return $pdf->stream('camps_sales_summary_from_'.$start_date.'_to_'. $end_date .'.pdf');
+            break;
+
+        }//switch
+    }//camp sale summary
 }//class

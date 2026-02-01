@@ -24,7 +24,7 @@
                 <a href="/rpt_user_sales_summary" class="btn btn-primary">User Sales Summary Report</a>
                 <hr>
                 <p>Campwise sales reports</p>
-                <a href="#" class="btn btn-primary">Camp Sales Report</a>
+                <a href="/rpt_camp_sale_summary" class="btn btn-primary">Camp Sales Report</a>
                 <a href="#" class="btn btn-primary">Camp Summary Report</a>
             </div>
         </div>

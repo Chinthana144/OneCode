@@ -4,11 +4,7 @@
     <div class="card">
         <div class="card-header">
             <h5>
-                @if (is_null($camp))
-                    Sales Reports
-                @else
-                    Sales Reports in <b>{{ $camp->name }}</b>
-                @endif
+               Camps Sale Summary Report
             </h5>
         </div>
         <div class="card-body">
@@ -37,6 +33,31 @@
                     </div>
                 </div>
             </form>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th rowspan="2" class="text-center">Camp Name</th>
+                    <th colspan="2" class="text-center">Subscription</th>
+                    <th colspan="2" class="text-center">Voucher</th>
+                    <th rowspan="2" class="text-center">Total</th>
+                </tr>
+                <tr>
+                    <th>Count</th>
+                    <th>Sale</th>
+                    <th>Count</th>
+                    <th>Sale</th>
+                </tr>
+                @foreach ($sales as $sale)
+                    <tr class="text-center">
+                        <td>{{ $sale['camp'] }}</td>
+                        <td>{{ $sale['subscription_count']}}</td>
+                        <td>{{ $sale['subscription_sale']}}</td>
+                        <td>{{ $sale['voucher_count']}}</td>
+                        <td>{{ $sale['voucher_sale']}}</td>
+                        <td>{{ $sale['total_sale']}}</td>
+                    </tr>
+                @endforeach
+            </table>
         </div>
     </div>
 @endsection
