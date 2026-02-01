@@ -58,7 +58,8 @@ INSERT INTO `pages` (`id`, `pagename`,`created_at`, `updated_at`) VALUES
 (9, 'Camps', NULL, NULL),
 (10, 'Camp Users', NULL, NULL),
 (11, 'Users', NULL, NULL),
-(12, 'User Access', NULL, NULL);
+(12, 'User Access', NULL, NULL),
+(13, 'Access Plans', NULL, NULL);
 
 -- add user access for admin user
 INSERT INTO page_accesses(id, user_id, page_id, camp_id, `create`, `view`, `edit`, `delete`, `created_at`, `updated_at`) VALUES
@@ -73,4 +74,5 @@ INSERT INTO page_accesses(id, user_id, page_id, camp_id, `create`, `view`, `edit
 (9, 1, 9, 1, 1,1,1,1,NULL, NULL),
 (10, 1, 10, 1, 1,1,1,1,NULL, NULL),
 (11, 1, 11, 1, 1,1,1,1,NULL, NULL),
-(12, 1, 12, 1, 1,1,1,1,NULL, NULL);
+(12, 1, 12, 1, 1,1,1,1,NULL, NULL),
+(13, 1, 13, 1, 1,1,1,1,NULL, NULL);

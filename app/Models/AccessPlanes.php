@@ -43,7 +43,7 @@ class AccessPlanes extends Model
 
     public function package()
     {
-        return $this->belongsTo(Packages::class, 'paymethod_id');
+        return $this->belongsTo(Packages::class, 'package_id');
     }
 
     public function paymethod()

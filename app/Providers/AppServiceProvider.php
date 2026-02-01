@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\AccessPlanes;
 use App\Models\Camps;
 use App\Models\CampUsers;
 use App\Models\Customers;
@@ -9,6 +10,7 @@ use App\Models\Packages;
 use App\Models\PageAccess;
 use App\Models\Subscriptions;
 use App\Models\User;
+use App\Policies\AccessPlanPolicy;
 use App\Policies\CampPolicy;
 use App\Policies\CampUserPolicy;
 use App\Policies\CustomerPolicy;
@@ -31,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             User::class => UserPolicy::class,
             Subscriptions::class => SubscriptionPolicy::class,
             PageAccess::class => UserAccessPolicy::class,
+            AccessPlanes::class => AccessPlanPolicy::class,
         ];
     /**
      * Register any application services.

@@ -2,6 +2,7 @@ $(document).ready(function () {
     //initialize
     $("#btn_customer_history").css('display', 'none');
     $("#btn_add_subscription").attr('disabled', 'true');
+    $("#btn_recharge_subscription").attr('disabled', 'true');
 
     $("#cmb_customer").select2({
         placeholder: 'Search Customers',
@@ -30,7 +31,7 @@ $(document).ready(function () {
 
     $("#cmb_customer").change(function () {
         var customer_id = $(this).val();
-        var camp_id = $("#hide_camp_id").val();
+        var camp_id = $("#hide_subscription_camp_id").val();
 
         $.ajax({
             type: "get",
@@ -41,7 +42,7 @@ $(document).ready(function () {
             // dataType: "dataType",
             success: function (response) {
                 // alert(response['name']);
-                // console.log(response);
+                console.log(response);
                 var customer_fullname = response['fullname'];
                 var customer_username = response['username'];
                 var customer_phone = response['phone'];
@@ -52,7 +53,6 @@ $(document).ready(function () {
 
                 $("#btn_customer_history").css('display', 'block');
             }
-
         });
 
         var package_data = "<option value='0'>Select Package</option>";
@@ -108,50 +108,90 @@ $(document).ready(function () {
         else
         {
             $("#btn_add_subscription").attr('disabled', true);
+            $("#btn_recharge_subscription").attr('disabled', true);
         }
     });
 
-    $("#frm_subscription").submit(function (e) {
-        e.preventDefault();
-        var customer_id = $("#hide_customer_id").val();
-        var package_id = $("#hide_package_id").val();
+//=============================== Vouchers ===========================//
+$("#customer_no").change(function (e) {
+    // e.preventDefault();
+    var camp_id = $("#hide_voucher_camp_id").val();
+    var package_data = "<option value='0'>Select Package</option>";
+    $.ajax({
+        type: "get",
+        url: "/getLaborPackages",
+        // data: "",
+        // dataType: "dataType",
+        success: function (response) {
+            console.log(response);
+            $.each(response, function (key, value) {
+                package_data += "<option value='"+value['id']+"'>Name: "+value['name']+" | "+value['duration']+"(days) | Price: "+value['price']+" AED</option>";
+            });
 
-        $.ajax({
-            type: "post",
-            url: "/store-subscription",
-            data: $(this).serialize(),
-            // dataType: "dataType",
-            success: function (response) {
-                console.log(response);
-                var has_success = response['success'];
-                // var message = response['message'];
-
-                // alert('data - ' + has_success);
-
-                if(has_success)
-                {
-                    var subscription_id = response['subscription_id'];
-
-                    alert("Subscription added successfully. continue to QR code");
-
-                    window.location.reload();
-
-                    //print receipt
-                    // let printWindow = window.open('/receipt-print?subscription_id='+subscription_id, '_blank');
-
-                    // setTimeout(function(){
-                    //     window.location.href = '/invoice';
-                    // }, 500);
-                }
-                else
-                {
-                    alert('task failed...');
-                }
-            }
-        });
+            $("#cmb_voucher_packages").empty();
+            $("#cmb_voucher_packages").append(package_data);
+        }
     });
+});
+
+// $("#cmb_voucher_packages").change(function (e) {
+//     e.preventDefault();
+//     var package_id = $(this).val();
+//     var customer_no = $("#customer_no").val();
+
+//     $.ajax({
+//         type: "get",
+//         url: "/getVoucherNo",
+//         data: {
+//             package_id: package_id,
+//         },
+//         // dataType: "dataType",
+//         success: function (response) {
+//             console.log(response);
+
+//             let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
+//             htmlDetails += "Package: <b>"+response['package']['name']+"</b><br>";
+//             htmlDetails += "Duration: <b>"+response['package']['duration']+"</b><br>";
+//             htmlDetails += "Package: <b>"+response['package']['name']+"</b>";
+
+//             $("#hide_voucher_id").val(response['voucher_id']);
+//             $("#p_voucher_details").html(htmlDetails);
+//             $("#btn_voucher_submit").prop('enabled', true);
+//         }
+//     });
+// });
+
+$("#btn_generate_code").click(function (e) {
+    e.preventDefault();
+    var customerNo = $("#customer_no").val();
+    var packageID = $("#cmb_voucher_packages").val();
+
+    $.ajax({
+        type: "get",
+        url: "/generateVoucherCode",
+        data: {
+            username: customerNo,
+            package_id: packageID,
+        },
+        // dataType: "dataType",
+        success: function (response) {
+            console.log(response);
+
+            let htmlDetails = "<span class='voucher-style'><b>"+ response['code'] +"</b></span><br>";
+            htmlDetails += "Package: <b>"+response['package']+"</b><br>";
+            htmlDetails += "Duration: <b>"+response['duration']+"</b><br>";
+            htmlDetails += "Price: <b>"+response['price']+"</b>";
+
+            $("#hide_voucher_id").val(response['voucher_id']);
+            $("#p_voucher_details").html(htmlDetails);
+            $("#btn_voucher_submit").prop('enabled', true);
+
+        }
+    });
+});
 
 //=============================== Customer ===========================//
+
 $("#btn_customers").click(function(){
     $("#customer_modal").modal('toggle');
 

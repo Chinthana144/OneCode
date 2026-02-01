@@ -47,14 +47,23 @@
                 </li>
             @endcan
 
-            @can('view', App\Models\Subscription::class)
+            @can('view', App\Models\AccessPlanes::class)
+                <li class="sidebar-item">
+                    <a href="{{ route('access_plans.index') }}" class="sidebar-link">
+                        <i class="bx bx-book fs-3"></i>
+                        <span>Access Plans</span>
+                    </a>
+                </li>
+            @endcan
+
+            {{-- @can('view', App\Models\Subscription::class)
             <li class="sidebar-item">
                 <a href="/view-subscription" class="sidebar-link">
                     <i class="bx bx-cloud-download fs-3"></i>
                     <span>Subscriptions</span>
                 </a>
             </li>
-            @endcan
+            @endcan --}}
 
             @can('access-control')
                 <li class="sidebar-item">
@@ -266,14 +275,23 @@
                         </li>
                     @endcan
 
-                    @can('view', App\Models\Subscription::class)
+                    @can('view', App\Models\AccessPlanes::class)
+                        <li class="sidebar-item">
+                            <a href="{{ route('access_plans.index') }}" class="sidebar-link">
+                                <i class="bx bx-book fs-3"></i>
+                                <span>Access Plans</span>
+                            </a>
+                        </li>
+                    @endcan
+
+                    {{-- @can('view', App\Models\Subscription::class)
                          <li class="sidebar-item">
                             <a href="/view-subscription" class="sidebar-link">
                                 <i class="bx bx-cloud-download fs-3"></i>
                                 <span>Subscriptions</span>
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
 
 
                     @can('access-control')

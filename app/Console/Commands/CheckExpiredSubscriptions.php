@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\AccessPlanes;
 use App\Models\Camps;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -32,46 +33,44 @@ class CheckExpiredSubscriptions extends Command
     {
         $now = Carbon::now();
 
-        $expiredCustomers = Customers::where('expiry_datetime', '<=', $now)->get();
+        $expired_planes = AccessPlanes::where('expire_at', '<=', $now)
+            ->where('status', '<', 3)
+            ->get();
 
-        foreach($expiredCustomers as $customer){
-            $customer_camp_id = $customer->camp_id;
-            $customer_username = $customer->username;
-            $customer_mac = $customer->mac_address;
+        foreach ($expired_planes as $plan) {
+            $camp_id = $plan->camp_id;
+            $mac_address = $plan->mac_address;
 
-            $camp_data = Camps::find($customer_camp_id);
+            $customer = $plan->accessable_type == 'App\Models\Subscriptions' ? $plan->accessable->customer->fullname : $plan->accessable->username;
+            $username = $plan->accessable_type == 'App\Models\Subscriptions' ? $plan->accessable->customer->username : $plan->accessable->code;
 
-            if ($camp_data) {
+            $camp = Camps::find($camp_id);
+
+            if($camp){
                 $hotspotService = new HotspotUsers(
-                    $camp_data->mikritikIP,
-                    $camp_data->mikrotikUsername,
-                    $camp_data->mikrotikPassword,
-                    $camp_data->mikritikPort
+                    $camp->mikritikIP,
+                    $camp->mikrotikUsername,
+                    $camp->mikrotikPassword,
+                    $camp->mikritikPort
                 );
 
                 if($hotspotService->isConnected) {
-                    // Remove the user from MikroTik
-                    $hotspotService->deleteHotspotUser($customer_username);
 
-                    if(!empty($customer_mac)) {
+                    if(!empty($mac_address)) {
                         // Unbind the MAC address from the user
-                        $hotspotService->unbindMacAddressFromUser($customer_mac);
+                        $hotspotService->unbindMacAddressFromUser($mac_address);
                     }
 
-                    $this->info("Removed expired user: {$customer_username} from camp: {$camp_data->name}");
+                    $this->info("Removed expired user: {$customer} - {$username} from camp: {$camp->name}");
                 }//check connection
+                else{
+                    $this->info("Camp Mikrotik connection failed! at : {$now}");
+                }
+            }//has camp
 
-            } else {
-                $this->error("Camp data not found for customer ID: {$customer->id}");
-            }
+            //change status
+            $plan->status = 3;
+            $plan->save();
         }//foreach
-
-        //get expired subscriptions
-        $expiredSubscriptions = Subscriptions::where('subscriptionEndTime', '<=', $now)->get();
-        foreach($expiredSubscriptions as $subs){
-
-            $subs->status = 3; //expired
-            $subs->save();
-        }
     }//handle
 }//Command class

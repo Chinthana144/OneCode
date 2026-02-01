@@ -34,8 +34,8 @@
 
 .detail_card{
     margin-top: 2px;
+    border: 1px solid dimgray;
     border-radius: 5px;
-    box-shadow: 1px 1px 2px dimgray;
     padding: 5px;
 }
 
@@ -44,7 +44,7 @@
 }
 
 #div_packages{
-    padding: 10px;
+    padding: 10px 0px;
 }
 
 #div_package_details{
@@ -56,3 +56,29 @@
     padding: 10px;
 }
 
+/*---------------------------------------------
+Form set
+----------------------------------------------*/
+.div_form_set{
+    padding: 10px 20px;
+    border: 1px solid blue;
+    border-radius: 10px;
+    height: 100%;
+}
+.div_form_set .form_title{
+    font-size: 22px;
+}
+.div_form_set #cmb_customer{
+    padding: 8px 4px;
+    font-size: 18px;
+}
+
+/* voucher style */
+.voucher-style{
+    background-color: green;
+    padding:5px 20px;
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+}

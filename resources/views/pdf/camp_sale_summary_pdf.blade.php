@@ -40,44 +40,46 @@
         </div>
         <div style="text-align: center;">
             <h2>Trizent Infratech Reports</h2>
-            <h4>{{$camp_name}} Sales Report</h4>
+            <h4>All Camps Sales Summary Report</h4>
         </div>
     </div>
     <div>
-        <p>Sales reports from {{ $start_date }} to {{ $end_date }}</p>
+        <p>Camp Sale Summary from <strong>{{ $start_date }} to {{ $end_date }}</strong></p>
     </div>
 
     <table id="tbl_main">
         <thead>
+            <<tr>
+                <th rowspan="2" class="text-center">No</th>
+                <th rowspan="2" class="text-center">Camp Name</th>
+                <th colspan="2" class="text-center">Subscription</th>
+                <th colspan="2" class="text-center">Voucher</th>
+                <th rowspan="2" class="text-center">Total</th>
+            </tr>
             <tr>
-                <th>No</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Username</th>
-                <th>Voucher</th>
-                <th>Package</th>
-                <th>Duration</th>
-                <th>Price</th>
+                <th>Count</th>
+                <th>Sale</th>
+                <th>Count</th>
+                <th>Sale</th>
             </tr>
         </thead>
         <tbody>
-             @foreach ($rows as $sale)
-                <tr>
+             @foreach ($sales as $sale)
+                <tr class="text-center">
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $sale['purchase_date'] }}</td>
-                    <td>{{ $sale['Type'] }}</td>
-                    <td>{{ $sale['username'] }}</td>
-                    <td>{{ $sale['voucher_code'] }}</td>
-                    <td>{{ $sale['package_name'] }}</td>
-                    <td>{{ $sale['duration'] }} days</td>
-                    <td style="text-align:right;">{{ $sale['price'] }}</td>
+                    <td>{{ $sale['camp'] }}</td>
+                    <td>{{ $sale['subscription_count']}}</td>
+                    <td>{{ $sale['subscription_sale']}}</td>
+                    <td>{{ $sale['voucher_count']}}</td>
+                    <td>{{ $sale['voucher_sale']}}</td>
+                    <td>{{ $sale['total_sale']}}</td>
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7" style="text-align: right;"><strong>Total Sales:</strong></td>
-                <td style="text-align:right;"><strong>{{ $rows->sum('price') }}</strong></td>
+                <td colspan="6" style="text-align: right;"><strong>Total Sales:</strong></td>
+                <td style="text-align:right;"><strong>{{ $camp_total }}</strong></td>
             </tr>
         </tfoot>
     </table>

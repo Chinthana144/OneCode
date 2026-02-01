@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessPlansController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CampController;
 use App\Http\Controllers\CampUserController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\CounterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MikrotikController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard.home');
     Route::get('/getBarchartData', [DashboardController::class, 'getBarchartData']);
     Route::get('/getDonutchartData', [DashboardController::class, 'getDonutchartData']);
+    Route::get('/getLineChartData', [DashboardController::class, 'getLineChartData']);
+    Route::get('/getPieChartData', [DashboardController::class, 'getPieChartData']);
 
     //camps
     Route::get('/camps', [CampController::class, 'index'])->name('camps.index');
@@ -89,13 +93,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/getCustomerPackages', [PackageController::class, 'getCustomerPackages']);
     Route::get('/getOnePackage', [PackageController::class, 'getOnePackage']);
     Route::get('/package-search', [PackageController::class, 'packageSearch'])->name('package.search');
+    Route::get('/getLaborPackages', [PackageController::class, 'getLaborPackages']);
 
     //invoice
-    Route::get('/invoice', [SubscriptionController::class, 'index'])->name('invoice.index');
-    Route::post('/store-subscription', [SubscriptionController::class, 'store'])->name('subscription.store');
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice.index');
+    Route::post('/store-subscription', [InvoiceController::class, 'storeSubscription'])->name('invoice.store_subscription');
+    Route::post('/store-voucher', [InvoiceController::class, 'storeVoucher'])->name('invoice.store_voucher');
+    Route::get('/generateVoucherCode', [InvoiceController::class, 'generateVoucherCode']);
 
     //receipt print
     Route::get('/receipt-print', [SubscriptionController::class, 'receiptPrint'])->name('invoice.receiptPrint');
+
+    //access plan
+    Route::get('/view-accessplans', [AccessPlansController::class, 'index'])->name('access_plans.index');
+    Route::get('/getOneAccessPlan', [AccessPlansController::class, 'getOneAccessPlan']);
+    Route::get('/accessPlanSearch', [AccessPlansController::class, 'accessPlanSearch'])->name('access_plan.search');
+    Route::post('/resetStatus', [AccessPlansController::class, 'resetStatus'])->name('access_plan.reset_status');
+    Route::post('/campTransfer', [AccessPlansController::class, 'campTransfer'])->name('access_plan.camp_transfer');
+    Route::post('/changeExpireDate', [AccessPlansController::class, 'changeExpireDate'])->name('access_plan.change_expire');
+    Route::post('/destroy', [AccessPlansController::class, 'destroy'])->name('access_plan.destroy');
 
     //subscriptions
     Route::get('/view-subscription', [SubscriptionController::class, 'show'])->name('subscription.show');
@@ -133,6 +149,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/rpt_user_package_summary_search', [ReportsController::class, 'rptUserPackageSummarySearch'])->name('rptUserPackageSummary.search');
     Route::get('/rpt_user_sales_summary', [ReportsController::class, 'showUserSalesSummaryReport']);
     Route::get('/rpt_user_sales_summary_search', [ReportsController::class, 'rptUserSalesSummarySearch'])->name('rptUserSalesSummary.search');
+    Route::get('/rpt_camp_sale_summary', [ReportsController::class, 'showCampSaleSummary']);
+    Route::get('/rpt_camp_sale_summary', [ReportsController::class, 'rptCampSaleSummarySearch'])->name('rptCampSaleSummary.search');
 
     //client side reports
     Route::get('/sale_reports', [ClientReportController::class, 'showSaleReports']);

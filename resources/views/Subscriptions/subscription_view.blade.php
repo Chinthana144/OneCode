@@ -52,10 +52,6 @@
                         <th>Package</th>
                         <th>Duration</th>
                         <th>Price</th>
-<<<<<<< HEAD
-                        <th>Expire</th>
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                         <th>Status</th>
                         <th>User</th>
                         @can('update', App\Models\Subscription::class)
@@ -70,55 +66,25 @@
                         <tr data-id="{{ $subs->id }}">
                             <td>{{ $subs->purchaseDate }}</td>
                             <td>{{ $subs->customer->fullname }}</td>
-<<<<<<< HEAD
-                            <td>
-                                {{ $subs->customer->username }}
-                                <br>
-                                {{ $subs->macAddress }}
-                            </td>
-=======
                             <td>{{ $subs->customer->username }}</td>
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                             <td>{{ $subs->package->name }}</td>
                             <td>{{ $subs->package->duration }}</td>
                             <td>{{ $subs->price }}</td>
                             <td>
-<<<<<<< HEAD
-                                {{ $subs->subscriptionEndTime }}
-                                <br>
-                                <span class="expiry" data-expire="{{ $subs->subscriptionEndTime  }}"></span>
-                            </td>
-                            <td>
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                                 @if ($subs->status == 1)
                                     <span class="badge bg-primary">ACTIVE</span>
                                 @elseif($subs->status == 2)
                                     <span class="badge bg-success">RUNNING</span>
                                 @elseif($subs->status == 3)
                                     <span class="badge bg-warning">EXPIRED</span>
-<<<<<<< HEAD
-                                @elseif($subs->status == 4)
-                                    <span class="badge bg-secondary">TRANSFERRED</span>
-                                @else
-                                    <span class="badge bg-danger">CANCELED</span>
-=======
                                 @else
                                     <span class="badge bg-danger">CANCLED</span>
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                                 @endif
                             </td>
                             <td>{{ $subs->user->name }}</td>
 
                             @can('update', App\Models\Subscription::class)
                             <td>
-<<<<<<< HEAD
-                                <button type="button" class="btn btn-success btn-sm btn_open_change" {{ $subs->status >= 3 ? 'disabled' : '' }}>
-                                    <i class="bx bx-refresh"></i>
-                                </button>
-                            
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
                                 <button type="button" class="btn btn-warning btn-sm btn_open_edit"><i class="bx bx-edit"></i></button>
                             </td>
                             @endcan
@@ -143,10 +109,6 @@
     </div>
 
     @include('Subscriptions.subs_edit_modal')
-<<<<<<< HEAD
-    @include('Subscriptions.camp_change_modal')
-=======
->>>>>>> c73bcf2561c5b01d6e7f5c3e35b3c9272024f4cd
 
     <script src="{{ asset('js/subscription.js') }}"></script>
 @endsection

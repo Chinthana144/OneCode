@@ -30,14 +30,14 @@
             <label for="" class="form-label mt-2">Price</label>
             <input type="number" step="0.01" name="price" id="edit_package_price" class="form-control">
 
-            <label for="" class="form-label mt-2">Bandwidth</label>
-            <input type="text" name="bandwidth" id="edit_package_bandwidth" class="form-control">
+            {{-- <label for="" class="form-label mt-2">Bandwidth</label>
+            <input type="text" name="bandwidth" id="edit_package_bandwidth" class="form-control"> --}}
 
-            <label for="" class="form-label mt-2">Download Limit (MB)</label>
-            <input type="number" name="downloadlimit" id="edit_package_downloadlimit" class="form-control">
+            {{-- <label for="" class="form-label mt-2">Download Limit (MB)</label>
+            <input type="number" name="downloadlimit" id="edit_package_downloadlimit" class="form-control"> --}}
 
-            <label for="" class="form-label mt-2">Upload Limit (MB)</label>
-            <input type="number" name="uploadlimit" id="edit_package_uploadlimit" class="form-control">
+            {{-- <label for="" class="form-label mt-2">Upload Limit (MB)</label>
+            <input type="number" name="uploadlimit" id="edit_package_uploadlimit" class="form-control"> --}}
 
             <label for="" class="form-label mt-2">Package Status</label>
             <div class="form-check form-switch">

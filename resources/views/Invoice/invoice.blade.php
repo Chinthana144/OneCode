@@ -12,9 +12,6 @@
 
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> --}}
-    {{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <script src="{{ asset('js/select2.min.js') }}"></script>
 
@@ -68,14 +65,14 @@
         </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6 p-1">
-                <div class="border border-primary rounded p-1">
-                    <form action="{{ route('subscription.store') }}" method="post">
+            <div class="col-md-6">
+                <div class="div_form_set">
+                    <form action="{{ route('invoice.store_subscription') }}" method="post">
                         @csrf
-                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
-                        <h5 class="badge bg-primary">Subscriptions</h5><br>
+                        <input type="hidden" name="hide_camp_id" id="hide_subscription_camp_id" value="{{ $camp->id }}">
+                        <h5 class="badge bg-primary form_title">Subscriptions</h5><br>
                         <label for="">Select Customer</label>
-                        <select name="cmb_customer" id="cmb_customer" class="form-control" style="width: 100%;">
+                        <select name="cmb_customer" id="cmb_customer" class="form-control" style="width: 100%; font-size:18px; padding:8px 4px;">
                         </select>
 
                         <div id="div_customer_details" class="detail_card">
@@ -93,7 +90,6 @@
 
                         <div id="div_package_details">
                             <p id="p_package_details">Select Package</p>
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <button type="submit" name="action" value="recharge" id="btn_recharge_subscription" class="btn btn-success w-100">Recharge</button>
@@ -107,28 +103,26 @@
                 </div>
             </div>
 
-            <div class="col-md-6 p-1">
-                <div class="border border-primary rounded p-1">
-                    <h5 class="badge bg-success">Vouchers</h5>
-                    <form action="" method="post">
-                        @csrf
-                        <input type="hidden" name="hide_camp_id" id="hide_camp_id" value="{{ $camp->id }}">
-                        <label for="">Customer Number</label>
-                        <input type="text" name="customer_no" class="form-control">
+            <div class="col-md-6">
+                <div class="div_form_set">
+                    <h5 class="badge bg-success form_title">Vouchers</h5>
+                    <input type="hidden" name="hide_camp_id" id="hide_voucher_camp_id" value="{{ $camp->id }}">
+                    <label for="">Customer Number</label>
+                    <input type="text" name="customer_no" id="customer_no" class="form-control me-2" required>
 
-                        <div id="div_voucher_details" class="detail_card">
-                            <p>Voucher Details</p>
-                        </div>
+                    <div id="div_packages">
+                        <label for="">Customer Packages</label>
+                        <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
+                    </div>
 
-                        <div id="div_packages">
-                            <label for="">Customer Packages</label>
-                            <select name="cmb_voucher_packages" id="cmb_voucher_packages" class="form-select"></select>
-                        </div>
+                    <button type="button" id="btn_generate_code" class="btn btn-success w-50">Generate Code</button>
 
-                        <button class="btn btn-">Issue Voucher</button>
-                    </form>
+                    <div class="detail_card">
+                        <p id="p_voucher_details">Voucher Details</p>
+                    </div>
+
+                    <a href="{{ route('invoice.index') }}" class="btn btn-success mt-2">Next -></a>
                 </div>
-                
             </div>
         </div>
     </div>

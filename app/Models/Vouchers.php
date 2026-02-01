@@ -10,7 +10,10 @@ class Vouchers extends Model
     use HasFactory;
 
     protected $fillable = [
+        'username',
         'code',
+        'expire_date',
+        'status',
     ];
 
     public function accessable()

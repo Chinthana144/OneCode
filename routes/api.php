@@ -52,3 +52,7 @@ Route::post('/login', [UserController::class, 'login'])->name('api.login');
 
 // API route for WiFi login
 Route::match(['get', 'post'],'/wifi_login', [WifiLoginController::class, 'login'])->name('api.wifi_login');
+
+//Api authentication
+Route::post('/authSubscription', [WifiLoginController::class, 'authSubscription'])->name('api.auth_subscription');
+Route::post('/authVoucher', [WifiLoginController::class, 'authVoucher'])->name('api.auth_voucher');

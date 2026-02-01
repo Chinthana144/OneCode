@@ -24,17 +24,17 @@ class DashboardController extends Controller
         $this_month = date('m');
 
         //daily subs
-        $daily_subs_total = AccessPlanes::where('camp_id', $camp_id)
+        $daily_invoice_total = AccessPlanes::where('camp_id', $camp_id)
             ->whereDate('purchaseDate', $today)
             ->sum('price');
 
         //daily invoice count
-        $daily_subs_count = AccessPlanes::where('camp_id', $camp_id)
+        $daily_invoice_count = AccessPlanes::where('camp_id', $camp_id)
             ->whereDate('purchaseDate', $today)
             ->count('id');
 
         //monthly sale
-        $monthly_subs_sale = AccessPlanes::where('camp_id', $camp_id)
+        $monthly_invoice_sale = AccessPlanes::where('camp_id', $camp_id)
             ->whereYear('purchaseDate', $this_year)
             ->whereMonth('purchaseDate', $this_month)
             ->sum('price');
@@ -50,7 +50,7 @@ class DashboardController extends Controller
             return redirect()->route('client.dashboard');
         }
 
-        return view('home', compact('camp', 'daily_subs_total', 'daily_subs_count', 'monthly_subs_sale', 'running_users'));
+        return view('home', compact('camp', 'daily_invoice_total', 'daily_invoice_count', 'monthly_invoice_sale', 'running_users'));
     }
 
     /**
@@ -107,7 +107,7 @@ class DashboardController extends Controller
         $date_range = $request->input('date_range');
 
         $camp_id = Session::get('active_camp_id');
-        $dates = Subscriptions::where('camp_id', $camp_id)
+        $dates = AccessPlanes::where('camp_id', $camp_id)
             ->selectRaw('DATE(purchaseDate) as date')
             ->distinct()
             ->orderByDesc('date')
@@ -117,12 +117,20 @@ class DashboardController extends Controller
         $salesData = $dates->map(function ($date) {
             $camp_id = Session::get('active_camp_id');
 
-            $total = Subscriptions::where('camp_id', $camp_id)
+            $subscription_total = AccessPlanes::where('camp_id', $camp_id)
                 ->whereDate('purchaseDate', $date)
+                ->where('accessable_type', 'App\Models\Subscriptions')
                 ->sum('price');
+
+            $voucher_total = AccessPlanes::where('camp_id', $camp_id)
+                ->whereDate('purchaseDate', $date)
+                ->where('accessable_type', 'App\Models\Vouchers')
+                ->sum('price');
+
             return [
                 'date' => $date,
-                'total' => $total,
+                'subscription_total' => $subscription_total,
+                'voucher_total' => $voucher_total,
             ];
         });
 
@@ -138,14 +146,64 @@ class DashboardController extends Controller
         $camp_id = Session::get('active_camp_id');
         $today = date('Y-m-d');
 
-        $packages = DB::table('subscriptions')
-            ->join('packages', 'subscriptions.package_id', '=', 'packages.id')
-            ->select('packages.name as package_name', DB::raw('SUM(subscriptions.price) as total_sales'))
-            ->where('subscriptions.camp_id', $camp_id)
-            ->whereDate('subscriptions.purchaseDateTime', $today)
+        $packages = DB::table('access_planes')
+            ->join('packages', 'access_planes.package_id', '=', 'packages.id')
+            ->select('packages.name as package_name', DB::raw('SUM(access_planes.price) as total_sales'))
+            ->where('access_planes.camp_id', $camp_id)
+            ->whereDate('access_planes.purchaseDateTime', $today)
             ->groupBy('packages.name')
             ->get();
 
         return response()->json($packages);
     }
-}
+
+    public function getLineChartData(Request $request)
+    {
+        $date_range = $request->input('date_range');
+        $camp_id = Session::get('active_camp_id');
+
+        $dates = AccessPlanes::where('camp_id', $camp_id)
+            ->selectRaw('DATE(purchaseDate) as date')
+            ->distinct()
+            ->orderByDesc('date')
+            ->limit($date_range)
+            ->pluck('date');
+
+        $salesData = $dates->map(function ($date) {
+            $camp_id = Session::get('active_camp_id');
+
+            $total = AccessPlanes::where('camp_id', $camp_id)
+                ->whereDate('purchaseDate', $date)
+                ->sum('price');
+
+            return [
+                'date' => $date,
+                'total' => $total,
+            ];
+        });
+        $salesData = $salesData->reverse()->values();
+
+        return response()->json($salesData);
+    }//get line total
+
+    public function getPieChartData()
+    {
+        $camp_id = Session::get('active_camp_id');
+        $today = date('Y-m-d');
+
+        $subscription_sale = AccessPlanes::where('camp_id', $camp_id)
+            ->whereDate('purchaseDate', $today)
+            ->where('accessable_type', 'App\Models\Subscriptions')
+            ->sum('price');
+
+        $voucher_sale = AccessPlanes::where('camp_id', $camp_id)
+            ->whereDate('purchaseDate', $today)
+            ->where('accessable_type', 'App\Models\Vouchers')
+            ->sum('price');
+
+        return response()->json([
+            'data' => [floatval($subscription_sale), floatval($voucher_sale)],
+            'labels' => ['Subscriptions', 'Vouchers'],
+        ]);
+    }
+}//class

@@ -42,8 +42,8 @@
                 <tr>
                     <th>No</th>
                     <th>Date</th>
-                    <th>Customer</th>
-                    <th>Uername</th>
+                    <th>Type</th>
+                    <th>Customer/Code</th>
                     <th>Package</th>
                     <th>Duration</th>
                     <th>Price</th>
@@ -52,8 +52,21 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ Str::substr($sale->purchaseDateTime, 0, 10) }}</td>
-                        <td>{{ $sale->customer->fullname }}</td>
-                        <td>{{ $sale->customer->username }}</td>
+
+                        <td>
+                            @if($sale->accessable_type == 'App\Models\Subscriptions')
+                                Subscription
+                            @else
+                                Voucher
+                            @endif
+                        </td>
+                        <td>
+                            @if($sale->accessable_type == 'App\Models\Subscriptions')
+                                {{$sale->accessable->customer->fullname}} <br> {{$sale->accessable->customer->username}}
+                            @else
+                                {{$sale->accessable->code}}
+                            @endif
+                        </td>
                         <td>{{ $sale->package->name }}</td>
                         <td>{{ $sale->package->duration }} days</td>
                         <td>{{ $sale->price }}</td>
