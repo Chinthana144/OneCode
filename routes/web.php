@@ -10,6 +10,7 @@ use App\Http\Controllers\CounterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DatabaseController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MikrotikController;
 use App\Http\Controllers\PackageController;
@@ -180,6 +181,9 @@ Route::middleware('auth')->group(function () {
     //for testing, delete this once testing is over
     Route::post('/checkConnection', [MikrotikController::class, 'checkConnection'])->name('mikrotik.checkConnection');
 
+    //admin section - admin only
+    Route::get('/query', [DatabaseController::class, 'index'])->name('query.index');
+    Route::post('/execue_query', [DatabaseController::class, 'runQuery'])->name('query.run');
 });
 
 //Wifi log in controller
