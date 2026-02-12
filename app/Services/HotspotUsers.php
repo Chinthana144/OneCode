@@ -44,52 +44,67 @@ class HotspotUsers
         }
     }//get identity
 
-    public function addHotspotUser($username, $user_pwd)
+
+    //========================= HOOTSPOT USERS =========================//
+        public function addHotspotUser($username, $user_pwd, $macAddress = null)
     {
         $query = new Query('/ip/hotspot/user/add');
+
         $query->equal('name', $username);
         $query->equal('password', $user_pwd);
-        // $query->equal('profile', $package_name); // Assign to created profile
-        // $query->equal('comment', 'Created by CloudTik system');
+
+        // Limit login to 1 device
+        // $query->equal('shared-users', '1');
+
+        // Bind MAC address (optional but recommended)
+        if (!empty($macAddress)) {
+            $query->equal('mac-address', $macAddress);
+        }
+
+        // Optional extras
+        // $query->equal('profile', $package_name);
+        $query->equal('comment', 'Added by web app API');
 
         $this->client->query($query)->read();
+    }
 
-        // try {
-        //     $this->client->query($query)->read();
-        //     // echo "Hotspot user created successfully!";
-        // } catch (\Exception $e) {
-        //     echo "Error creating hotspot user: " . $e->getMessage();
-        // }
+    //get hotspos user
+    public function getHotspotUser($username)
+    {
+        $printQuery = (new Query('/ip/hotspot/user/print'))->where('name', $username);
+
+        $activeUser = $this->client->query($printQuery)->read();
+
+        return $activeUser;
     }
 
     public function getAllhotspotUsers()
     {
         $query = new Query('/ip/hotspot/user/print');
-        $query->equal('.proplist', '.id,name,password,profile,comment');
 
-        try {
-            $response = $this->client->query($query)->read();
-            return $response;
-        } catch (\Exception $e) {
-            echo "Error fetching hotspot users: " . $e->getMessage();
-            return [];
-        }
+        $response = $this->client->query($query)->read();
+        return $response;
     }
 
-    public function getHotspotUserByUsername($username)
+    public function removeHotspotUserAndSession($username)
     {
-        $query = new Query('/ip/hotspot/user/print');
-        $query->equal('name', $username);
-        $query->equal('.proplist', '.id,name,password,profile,comment');
+        $printQuery = (new Query('/ip/hotspot/user/print'))->where('name', $username);
 
-        try {
-            $response = $this->client->query($query)->read();
-            return $response;
-        } catch (\Exception $e) {
-            echo "Error fetching hotspot user: " . $e->getMessage();
-            return [];
+        $activeUser = $this->client->query($printQuery)->read();
+
+        if (!empty($activeUser)) {
+
+            $activeId = $activeUser[0]['.id'];
+
+            //Remove active session
+            $removeQuery = (new Query('/ip/hotspot/active/remove'))->where('.id', $activeId);
+            $this->client->query($removeQuery)->read();
+
+            //Remove user
+            $deleteQuery = (new Query('/ip/hotspot/user/remove'))->where('.id', $activeId);
+            $this->client->query($deleteQuery)->read();
         }
-    }
+    }//remove hotspot user and session
 
     public function deleteHotspotUser($username)
     {

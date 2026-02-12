@@ -202,8 +202,8 @@ class WifiLoginController extends Controller
         $mac = $request->input('mac');
         $ip = $request->input('ip');
         $link_login = $request->input('link_login');
-        $username = $request->input('cust_username');
-        $password = $request->input('cust_password');
+        $username = $request->input('username');
+        $password = $request->input('password');
 
         //camp data
         $camp_data = Camps::find($camp_id);
@@ -254,36 +254,38 @@ class WifiLoginController extends Controller
                     $accessPlans->save();
 
                     //bind mac address
-                    $hotspot_user->bindMacAddressToUser($username, $mac);
+                    // $hotspot_user->bindMacAddressToUser($username, $mac);
 
-                    //remove these when going live
+                    //create hotspot user
+                    $hotspot_user->addHotspotUser($username, $password, $mac);
+
                     return response()->json([
-                        'success' => true,
-                        'message' => 'subscription added successfully!',
+                        'status' => 'success',
+                        'message' => 'Login successful.',
+                        'login_datetime' => $accessPlans->login_at,
+                        'expiry_datetime' => $accessPlans->expire_at,
                     ]);
-
-                    //redirect uri
-                    // $redirectUrl = 'https://cloudtik.trizent.net/userlogin?id=' . $customer->id;
-
-                    // return redirect($redirectUrl);
                 }//has access plan
                 else{
-                    return redirect()->away(
-                        $link_login . '?error='. urlencode('No active subscription found')
-                    );
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'No active subscription found, please contact Sales Person.',
+                    ]);
                 }//no active plan
             }//same camp
             else
             {
-                return redirect()->away(
-                    $link_login . '?error='. urlencode('Access denied! Invalid camp ID')
-                );
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Please login with correct camp login page.',
+                ]);
             }//wrong camp
         }//has customer
         else{
-            return redirect()->away(
-                $link_login . '?error='. urlencode('Invalid username or password')
-            );
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid username or password, please try again.',
+            ]);
         }//not customer
     }//auth subscription
 
@@ -321,6 +323,7 @@ class WifiLoginController extends Controller
         $current_expire_date = now()->addDays(90);
         $voucher = Vouchers::where('code', $code)
             ->whereDate('expire_date', '<=', $current_expire_date)
+            ->where('status', 1)
             ->first();
 
         if($voucher){
@@ -336,23 +339,32 @@ class WifiLoginController extends Controller
             $login_at = now();
             $expire_at = now()->addDays($duration);
 
-            $access_plan->login_at = $login_at;
-            $access_plan->expire_at = $expire_at;
+            $access_plan->login_at ??= $login_at;
+            $access_plan->expire_at ??= $expire_at;
             $access_plan->mac_address = $mac;
             $access_plan->ip_address = $ip;
             $access_plan->status = 2;
 
             $access_plan->save();
 
+            //create hotspot user
+            $hotspot_user->addHotspotUser($code, $code, $mac);
+
+            //voucher status
+            $voucher->status = 2;
+            $voucher->save();
+
             return response()->json([
-                'success' => true,
-                'message' => 'Access Plan activated successfully!'
+                'status' => 'success',
+                'message' => 'Login successful.',
+                'login_datetime' => $access_plan->login_at,
+                'expiry_datetime' => $access_plan->expire_at,
             ]);
         }//has voucher
         else{
             return response()->json([
-                'success' => false,
-                'message' => 'unable to find voucher'
+                'status' => 'error',
+                'message' => 'Incorrect voucher code or voucher is expired, please try again.',
             ]);
         }//no voucher
     }//auth voucher

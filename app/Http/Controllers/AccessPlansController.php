@@ -101,31 +101,49 @@ class AccessPlansController extends Controller
 
         $hotspot = new HotspotUsers($host, $camp_user, $camp_password, $port);
 
-        $mac_address = $access_plan->mac_address;
-
         if($request->action == 'reset')
         {
-            if($mac_address != "" || !isEmpty($mac_address))
-            {
-                $hotspot->unbindMacAddressFromUser($mac_address);
-            }
+            $username = $access_plan->accessable_type == 'App\Models\Subscriptions' ? $access_plan->accessable->customer->username : $access_plan->accessable->code;
+
+            //remove hotspot user and session
+            $hotspot->removeHotspotUserAndSession($username);
+
             $access_plan->status = 1;
             $access_plan->mac_address = "";
 
             $access_plan->save();
 
+            //voucher
+            if($access_plan->accessable_type == 'App\Models\Vouchers'){
+                $voucher_id = $access_plan->accessable_id;
+                $voucher = Vouchers::find($voucher_id);
+                $voucher->status = 1;
+
+                $voucher->save();
+            }
+
             return redirect()->route('access_plans.index')->with('success', 'Access Plan reset successfully!');
         }
         if($request->action == 'cancel')
         {
-            if($mac_address != "" || !isEmpty($mac_address))
-            {
-                $hotspot->unbindMacAddressFromUser($mac_address);
-            }
+            $username = $access_plan->accessable_type == 'App\Models\Subscriptions' ? $access_plan->accessable->customer->username : $access_plan->accessable->code;
+
+            //remove hotspot user and session
+            $hotspot->removeHotspotUserAndSession($username);
+
             $access_plan->status = 4;
             $access_plan->mac_address = "";
 
             $access_plan->save();
+
+            //voucher
+            if($access_plan->accessable_type == 'App\Models\Vouchers'){
+                $voucher_id = $access_plan->accessable_id;
+                $voucher = Vouchers::find($voucher_id);
+                $voucher->status = 4; //cancled
+
+                $voucher->save();
+            }
 
             return redirect()->route('access_plans.index')->with('success', 'Access Plan canceled successfully!');
         }
