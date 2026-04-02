@@ -150,7 +150,7 @@ class DashboardController extends Controller
             ->join('packages', 'access_planes.package_id', '=', 'packages.id')
             ->select('packages.name as package_name', DB::raw('SUM(access_planes.price) as total_sales'))
             ->where('access_planes.camp_id', $camp_id)
-            ->whereDate('access_planes.purchaseDateTime', $today)
+            ->whereDate('access_planes.purchaseDate', $today)
             ->groupBy('packages.name')
             ->get();
 
