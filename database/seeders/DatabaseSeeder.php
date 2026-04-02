@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             FirstCampSeeder::class,
             FirstCampAccessSeeder::class,
             PageSeeder::class,
+            UserAccessSeeder::class,
         ]);
     }
 }
