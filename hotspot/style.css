@@ -73,11 +73,32 @@ body {
     color: #fff;
 }
 
-/* QR code */
+/* QR code section */
 #qrcode{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.btn_qr_section{
+    padding: 10px 5px;
+    border: none;
+    border-radius: 10px;
+}
+
+#div_qr_buttons{
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+#btn_back{
+    width: 25%;
+    background-color: #bbb;
+}
+#btn_connect{
+    width: 75%;
+    background-color: #007BFF;
+    color: #f1f1f1;
 }
 
 #btn_customer_login{
@@ -85,6 +106,10 @@ body {
 }
 #btn_qr_generator{
     background-color: #23be52;
+}
+
+#btn_voucher_login{
+    background-color: #007BFF;
 }
 
 /* input[type="text"],

@@ -9,7 +9,7 @@
 <body>
 	<div id="div_login">
 		<div id="div_logo">
-			<img src="img/logo.png" alt="" id="img_logo">
+			<img src="img/logo_3.png" alt="" id="img_logo">
 		</div>
 	
 		<div id="div_camp_name">
@@ -20,6 +20,8 @@
 			<button class="btn_toggler" id="btn_customer">Customer</button>
 			<button class="btn_toggler" id="btn_voucher">Voucher</button>
 		</div>
+
+		<div id="message"></div>
 
 		<div id="div_customer_login">
 			<form id="loginForm">
@@ -45,22 +47,29 @@
 					<input class="txt_input" type="password" id="password" placeholder="Password" required />
 				</div>
 
-
 				<div id="div_qr_section" style="display:none;">
 					<div id="qrcode"></div>
+					<div id="div_qr_buttons">
+						<button class="btn_qr_section" id="btn_back">Back</button>
+						<button class="btn_qr_section" id="btn_connect">Connect</button>
+					</div>
 				</div>
 
-				<button type="submit" class="btn_submit" id="btn_customer_login">Login</button>
+				<button type="button" class="btn_submit" id="btn_customer_login">Login</button>
 
 				<button type="button" class="btn_submit" id="btn_qr_generator">Generate QR</button>
 
 			</form>
-
 			
 		</div>
 
 		<div id="div_voucher_login">
-			<p>Voucher Login</p>
+			<form id="frm_voucher_login">
+				<label for="">Voucher No</label>
+				<input class="txt_input" type="text" id="voucher_no" placeholder="12345678" required />
+
+				<button type="submit" class="btn_submit" id="btn_voucher_login">Login</button>
+			</form>
 		</div>
 		
 		<!-- <form id="frm_login" action="https://cloudtik.trizent.net/api/wifi_login" method="post">
@@ -90,8 +99,7 @@
 			<input type="hidden" name="dst" value="$(link-orig)">
 			<input type="hidden" name="popup" value="true">
 		</form> -->
-
-		<div id="message"></div>
+		
 	</div>
 
 	<script src="script.js"></script>

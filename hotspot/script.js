@@ -1,5 +1,6 @@
 const divCustomer = document.getElementById("div_customer_login");
 const divVoucher = document.getElementById("div_voucher_login");
+const divMessage = document.getElementById("message");
 
 //hide voucher div
 divVoucher.style.display = "none";
@@ -8,6 +9,10 @@ divVoucher.style.display = "none";
 const btnCustomer = document.getElementById('btn_customer');
 const btnVoucher = document.getElementById('btn_voucher');
 const btnQRCode = document.getElementById('btn_qr_generator');
+
+const btnBack = document.getElementById("btn_back");
+
+const qrCanvas = document.getElementById("qrcode");
 
 //add classes
 btnCustomer.classList.add('selected_color');
@@ -29,10 +34,39 @@ btnCustomer.onclick = function(){
 btnQRCode.onclick = function(){
     const inputSection = document.getElementById("inputSection");
     const qrContainer = document.getElementById("div_qr_section");
-    inputSection.style.display = "none";
-    qrContainer.style.display = "block";
 
-    generateQR();
+    const btnLogin = document.getElementById("btn_customer_login");
+    const btnQRCode = document.getElementById("btn_qr_generator");
+    
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    if(username == "" || password == ""){
+        
+        divMessage.innerHTML = "<p style='color:red;'>Please enter username and password!</p>";
+    }
+    else{
+        btnLogin.style.display = "none";
+        btnQRCode.style.display = "none";
+
+        inputSection.style.display = "none";
+        qrContainer.style.display = "block";
+        
+        generateQR();
+    } 
+
+}//barcode generate
+
+//back button
+btnBack.onclick = function(){
+    btnLogin.style.display = "block";
+    btnQRCode.style.display = "block";
+
+    inputSection.style.display = "block";
+    qrContainer.style.display = "none";
+
+    //clear qrcode
+    qrCanvas.innerHTML = "";
 }
 
 btnVoucher.onclick = function(){
@@ -62,8 +96,6 @@ function generateQR(){
         ip:ip,
         camp_id: campID,
     }); 
-    
-    const qrCanvas = document.getElementById("qrcode");
 
     //clear previous qr
     qrCanvas.innerHTML = "";
