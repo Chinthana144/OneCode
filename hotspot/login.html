@@ -23,20 +23,40 @@
 
 		<div id="div_customer_login">
 			<form id="loginForm">
+				<!-- testing mac and ip inputs -->
+				<input type="hidden" name="mac" id="mac" value="CC:23:D3:46:AA:11">
+				<input type="hidden" name="ip" id="ip" value="172.16.1.33">
+				
+				<!-- original mac and ip inputs -->
+				<!-- <input type="hidden" name="mac" id="mac" value="$(mac)"> -->
+				<!-- <input type="hidden" name="ip" id="ip" value="$(ip)"> -->
+
+				<input type="hidden" name="link-login" id="link-login" value="$(link-login)">
+				<input type="hidden" name="link-orig" id="link-orig" value="$(link-orig)">
+				<input type="hidden" name="error" value="$(error)">
+				<!-- camp_id for each camp, cloud registered ID  -->
+				<input type="hidden" name="camp_id" id="camp_id" value="1">
+
 				<div id="inputSection">
-					
+					<label for="">Username(phone no)</label>
 					<input class="txt_input" type="text" id="username" placeholder="Username" required />
 					<br>
+					<label for="">Password</label>
 					<input class="txt_input" type="password" id="password" placeholder="Password" required />
 				</div>
 
+
+				<div id="div_qr_section" style="display:none;">
+					<div id="qrcode"></div>
+				</div>
+
 				<button type="submit" class="btn_submit" id="btn_customer_login">Login</button>
+
+				<button type="button" class="btn_submit" id="btn_qr_generator">Generate QR</button>
+
 			</form>
 
-			<div id="qrSection" style="display:none;">
-				<canvas id="qrCanvas"></canvas>
-			</div>
-			<button type="button" class="btn_submit" id="btn_qr_generator">Generate QR</button>
+			
 		</div>
 
 		<div id="div_voucher_login">
@@ -75,5 +95,6 @@
 	</div>
 
 	<script src="script.js"></script>
+	<script src="qrcode.min.js"></script>
 </body>
 </html>

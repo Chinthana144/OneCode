@@ -25,7 +25,7 @@ body {
 #div_camp_name h3{
     font-size: 36px;
     font-family:Arial, Helvetica, sans-serif;
-    margin: 5px;
+    margin: 20px 5px;
 }
 
 /* -- button togglers -- */
@@ -52,6 +52,9 @@ body {
 }
 
 /* -- inputs --  */
+#inputSection{
+    margin-top: 20px;
+}
 .txt_input{
     width: 100%;
     margin: 5px 0;
@@ -68,6 +71,13 @@ body {
     margin-left: 10%;
     width: 80%;
     color: #fff;
+}
+
+/* QR code */
+#qrcode{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #btn_customer_login{

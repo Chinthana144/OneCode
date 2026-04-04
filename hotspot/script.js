@@ -7,6 +7,7 @@ divVoucher.style.display = "none";
 //buttons
 const btnCustomer = document.getElementById('btn_customer');
 const btnVoucher = document.getElementById('btn_voucher');
+const btnQRCode = document.getElementById('btn_qr_generator');
 
 //add classes
 btnCustomer.classList.add('selected_color');
@@ -25,6 +26,15 @@ btnCustomer.onclick = function(){
     divCustomer.style.display = "block";
 }
 
+btnQRCode.onclick = function(){
+    const inputSection = document.getElementById("inputSection");
+    const qrContainer = document.getElementById("div_qr_section");
+    inputSection.style.display = "none";
+    qrContainer.style.display = "block";
+
+    generateQR();
+}
+
 btnVoucher.onclick = function(){
     // console.log("voucher form select");
     //change color
@@ -36,6 +46,33 @@ btnVoucher.onclick = function(){
 
     divVoucher.style.display = "block";
     divCustomer.style.display = "none";
+}
+
+function generateQR(){
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const mac = document.getElementById("mac").value;
+    const ip = document.getElementById("ip").value;
+    const campID = document.getElementById("camp_id").value;
+
+    const qrData = JSON.stringify({
+        username: username,
+        password: password,
+        mac: mac,
+        ip:ip,
+        camp_id: campID,
+    }); 
+    
+    const qrCanvas = document.getElementById("qrcode");
+
+    //clear previous qr
+    qrCanvas.innerHTML = "";
+
+    new QRCode(qrCanvas, {
+        text: qrData,
+        width: 200,
+        height: 200,
+    });
 }
 
 // document.getElementById('frm_login').addEventListener('submit', function(e){
