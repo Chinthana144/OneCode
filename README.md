@@ -122,36 +122,35 @@ The system is built to handle:
 
 ## Installation Guide
 
-1. Clone the repository
+Clone the repository
 
     git clone https://github.com/Chinthana144/OneCode.git
     cd onecode
 
-2. Install dependencies
+Install dependencies
 
     composer install
     npm install
     npm run build
 
-3. Environment setup
+Environment setup
 
     cp .env.example .env
     php artisan key:generate
 
 Update .env with:
 - Database credentials
-- MikroTik API credentials
 - App URL
 
-4. Run migrations with seeder
+Run migrations with seeder
 
     Run migrations --seed
 
-5. Start development server
+Start development server
 
     php artisan serve
 
-6. Run scheduler (for cron jobs)
+Run scheduler (for cron jobs)
 
     php artisan schedule:work
 
