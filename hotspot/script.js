@@ -17,6 +17,9 @@ const qrCanvas = document.getElementById("qrcode");
 //add classes
 btnCustomer.classList.add('selected_color');
 
+//customer login
+
+
 //button on click
 btnCustomer.onclick = function(){
     // console.log("customer form select");
