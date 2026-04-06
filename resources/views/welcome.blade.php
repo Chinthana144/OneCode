@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Trizent</title>
+    <title>OneCode ISP</title>
 
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/company/trizent_icon.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/company/logo_icon.ico') }}">
 </head>
 <body>
     {{-- <div id="top_bar">

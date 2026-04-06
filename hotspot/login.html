@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Trizent</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div id="div_login">
+		<div id="div_logo">
+			<img src="img/logo_3.png" alt="" id="img_logo">
+		</div>
+	
+		<div id="div_camp_name">
+			<h3>Camp Name</h3>
+		</div>
+
+		<div id="div_togglers">
+			<button class="btn_toggler" id="btn_customer">Customer</button>
+			<button class="btn_toggler" id="btn_voucher">Voucher</button>
+		</div>
+
+		<div id="message"></div>
+
+		<div id="div_customer_login">
+			<form id="loginForm">
+				<!-- testing mac and ip inputs -->
+				<input type="hidden" name="mac" id="mac" value="CC:23:D3:46:AA:11">
+				<input type="hidden" name="ip" id="ip" value="172.16.1.33">
+				
+				<!-- original mac and ip inputs -->
+				<!-- <input type="hidden" name="mac" id="mac" value="$(mac)"> -->
+				<!-- <input type="hidden" name="ip" id="ip" value="$(ip)"> -->
+
+				<input type="hidden" name="link-login" id="link-login" value="$(link-login)">
+				<input type="hidden" name="link-orig" id="link-orig" value="$(link-orig)">
+				<input type="hidden" name="error" value="$(error)">
+				<!-- camp_id for each camp, cloud registered ID  -->
+				<input type="hidden" name="camp_id" id="camp_id" value="1">
+
+				<div id="inputSection">
+					<label for="">Username(phone no)</label>
+					<input class="txt_input" type="text" id="username" placeholder="Username" required />
+					<br>
+					<label for="">Password</label>
+					<input class="txt_input" type="password" id="password" placeholder="Password" required />
+				</div>
+
+				<div id="div_qr_section" style="display:none;">
+					<div id="qrcode"></div>
+					<div id="div_qr_buttons">
+						<button class="btn_qr_section" id="btn_back">Back</button>
+						<button class="btn_qr_section" id="btn_connect">Connect</button>
+					</div>
+				</div>
+
+				<button type="button" class="btn_submit" id="btn_customer_login">Login</button>
+
+				<button type="button" class="btn_submit" id="btn_qr_generator">Generate QR</button>
+
+			</form>
+			
+		</div>
+
+		<div id="div_voucher_login">
+			<form id="frm_voucher_login">
+				<label for="">Voucher No</label>
+				<input class="txt_input" type="text" id="voucher_no" placeholder="12345678" required />
+
+				<button type="submit" class="btn_submit" id="btn_voucher_login">Login</button>
+			</form>
+		</div>
+		
+		<!-- <form id="frm_login" action="https://cloudtik.trizent.net/api/wifi_login" method="post">
+			<input type="hidden" name="mac" id="mac" value="$(mac)">
+			<input type="hidden" name="ip" id="ip" value="$(ip)">
+			<input type="hidden" name="username" value="$(username)">
+			<input type="hidden" name="link-login" id="link-login" value="$(link-login)">
+			<input type="hidden" name="link-orig" id="link-orig" value="$(link-orig)">
+			<input type="hidden" name="error" value="$(error)">
+			add camp id => this camp id = 1
+			<input type="hidden" name="camp_id" id="camp_id" value="1">
+
+			<p id="p_camp_name">Camp Name</p>
+
+			<label for="">Username:</label> 
+			<input type="text" name="username" id="username" placeholder="0#########"><br>
+			<label for="">Password:</label> 
+			<input type="password" name="password" id="password"><br>
+			<button type="submit" id="btn_login">Login</button>
+
+			<p style="font-size: small;">By logging in, you agree to our <a href="#">Terms of Service</a>.</p>
+		</form> -->
+
+		<!-- <form id="mikrotikLogin" action="$(link-login-only)" method="post" style="display:none;">
+			<input type="hidden" name="username">
+			<input type="hidden" name="password">
+			<input type="hidden" name="dst" value="$(link-orig)">
+			<input type="hidden" name="popup" value="true">
+		</form> -->
+		
+	</div>
+
+	<script src="script.js"></script>
+	<script src="qrcode.min.js"></script>
+</body>
+</html>

@@ -56,10 +56,13 @@ class CheckExpiredSubscriptions extends Command
 
                 if($hotspotService->isConnected) {
 
-                    if(!empty($mac_address)) {
-                        // Unbind the MAC address from the user
-                        $hotspotService->unbindMacAddressFromUser($mac_address);
-                    }
+                    //remove hotspot and session
+                    $hotspotService->removeHotspotUserAndSession($username);
+                    
+                    // if(!empty($mac_address)) {
+                    //     // Unbind the MAC address from the user
+                    //     $hotspotService->unbindMacAddressFromUser($mac_address);
+                    // }
 
                     $this->info("Removed expired user: {$customer} - {$username} from camp: {$camp->name}");
                 }//check connection
