@@ -11,7 +11,10 @@
 <body>
     <div id="div_topbar">
         <img src="{{ asset('images/company/logo_2.png') }}" alt="log" id="img_topbar">
-        <button id="btn_login">Login</button>
+        <a href="/login">
+            <button id="btn_login">Login</button>
+        </a>
+        
     </div>
 
     <section class="section" id="sec_hero">
