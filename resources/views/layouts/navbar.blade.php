@@ -6,7 +6,7 @@
                 <i class="bx bx-grid-alt"></i>
             </button>
             <div class="sidebar-logo">
-                <a href="/dashboard">OneCode ISPMS</a>
+                <a href="/dashboard">Trizent</a>
             </div>
         </div>
         <ul class="sidebar-nav">

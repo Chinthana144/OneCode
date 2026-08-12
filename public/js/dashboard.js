@@ -230,10 +230,9 @@ function loadLineChart(date_range)
                 dataLabels: {
                     enabled: false
                 },
-                stroke: {
-                    curve: 'straight'
-                },
-
+                // stroke: {
+                //     curve: 'straight'
+                // },
                 title: {
                     text: 'Daily Sale',
                     align: 'left'
@@ -242,8 +241,8 @@ function loadLineChart(date_range)
                     text: 'Price Movements',
                     align: 'left'
                 },
-                    labels: calDate,
-                    xaxis: {
+                labels: calDate,
+                xaxis: {
                     type: 'Date',
                 },
                 yaxis: {
